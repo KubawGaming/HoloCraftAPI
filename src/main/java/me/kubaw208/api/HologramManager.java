@@ -22,6 +22,15 @@ public class HologramManager {
 
     @Getter private static Plugin plugin;
     @Getter private static HologramManager instance;
+    /**
+     * List where you can find instances of holograms
+     * You won't find holograms that were removed after reloading the plugin
+     * If you want those holograms to continue working properly you need to add them to this list again
+     * @Warning Don't make changes to the list if you're not sure what you're doing!
+     */
+    @Getter private final ArrayList<Hologram> holograms = new ArrayList<>();
+    private final AtomicInteger placeholdersUpdaterTaskID = new AtomicInteger();
+    private int placeholdersUpdaterIntervalInTicks;
 
     public HologramManager(Plugin plugin) {
         this.plugin = plugin;
@@ -34,16 +43,6 @@ public class HologramManager {
         registerListeners(new PlayerJoinListener(), new PlayerQuitListener(), new PlayerChangeWorldListener());
         setPlaceholdersUpdaterTaskInterval(200); //Default refresh placeholders in all holograms every 10 seconds
     }
-
-    /**
-     * List where you can find instances of holograms
-     * You won't find holograms that were removed after reloading the plugin
-     * If you want those holograms to continue working properly you need to add them to this list again
-     * @Warning Don't make changes to the list if you're not sure what you're doing!
-     */
-    @Getter private final ArrayList<Hologram> holograms = new ArrayList<>();
-    private final AtomicInteger placeholdersUpdaterTaskID = new AtomicInteger();
-    private int placeholdersUpdaterIntervalInTicks;
 
     /**
      * Creates new hologram depending on hologram type
