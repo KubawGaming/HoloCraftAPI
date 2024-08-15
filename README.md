@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.KubawGaming:HoloCraftAPI:VERSION_HERE'
+    implementation 'com.github.KubawGaming:HoloCraftAPI:VERSION_HERE'
 }
 ```
 
