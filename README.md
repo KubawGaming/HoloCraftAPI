@@ -28,6 +28,20 @@ public class HoloCraftAPI extends JavaPlugin {
 }
 ```
 
+Once we have HologramManager, we can create our holograms.
+
+To create a hologram, we need to specify the type of hologram and the location. There are 3 types of holograms - TEXT_DISPLAY, ITEM_DISPLAY and BLOCK_DISPLAY.
+
+```java
+Player player = ...;
+HologramManager hologramManager = HologramManager.getInstance();
+Hologram hologram = hologramManager.createHologram(HologramType.TEXT_DISPLAY, player.getLocation());
+```
+
+Using the Hologram object, you can do basic changes such as changing the visibility of the hologram to players, changing the location of the hologram, updating placeholders instantly, etc.
+
+More specific hologram data - such as text, rotation, etc. - you can find in the Data of individual types of holograms. For example, if we created a hologram with type TEXT_DISPLAY then we will use TextDisplayData. 
+
 ## Gradle:
 
 ```gradle
