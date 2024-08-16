@@ -14,7 +14,7 @@ You create ONLY ONE instance of the HologramManager class! This is important! Ho
 Here is an example:
 
 ```java
-public class HoloCraftAPI extends JavaPlugin {
+public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
