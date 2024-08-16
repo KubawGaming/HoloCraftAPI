@@ -89,7 +89,7 @@ Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
 }, 0, 1);
 ```
 
-Effect:
+### Effect:
 
 ![](https://github.com/KubawGaming/HoloCraftAPI/blob/master/src/main/gifs/rotate_animation_block.gif)
 
