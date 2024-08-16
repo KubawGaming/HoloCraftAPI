@@ -91,7 +91,7 @@ Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
 
 Effect:
 
-![]([https://github.com/Your_Repository_Name/Your_GIF_Name.gif](https://github.com/KubawGaming/HoloCraftAPI/blob/master/src/main/gifs/rotate_animation_block.gif))
+![](https://github.com/KubawGaming/HoloCraftAPI/blob/master/src/main/gifs/rotate_animation_block.gif)
 
 ## Gradle:
 
