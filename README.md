@@ -89,6 +89,10 @@ Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
 }, 0, 1);
 ```
 
+Effect:
+
+![]([https://github.com/Your_Repository_Name/Your_GIF_Name.gif](https://github.com/KubawGaming/HoloCraftAPI/blob/master/src/main/gifs/rotate_animation_block.gif))
+
 ## Gradle:
 
 ```gradle
