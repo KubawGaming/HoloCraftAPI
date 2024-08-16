@@ -42,6 +42,20 @@ Using the Hologram object, you can do basic changes such as changing the visibil
 
 More specific hologram data - such as text, rotation, etc. - you can find in the Data of individual types of holograms. For example, if we created a hologram with type TEXT_DISPLAY then we will use TextDisplayData. 
 
+```java
+hologram.showHologram(player)
+    // Data of hologram is repeating data for all types of holograms
+    .getData()
+        // We want to change the text of the hologram
+        // This procedure is only possible for the hologram type TEXT_DISPLAY so we need to enter the TextDisplayData
+        .asTextDisplayData()
+            .setText("Hologram created by HoloCraftAPI")
+    .getHologram() // it's a helpful method to get back from Data to the Hologram class
+    .applyChanges();
+```
+
+As you can see at the end I used `.applyChanges()`. In order for the changes you make to be approved and shown to players, you must use this method. Use `.applyChanges()` when you make changes to Data or when you change hologram location using `hologram.setLocation(location);`.
+
 ## Gradle:
 
 ```gradle
