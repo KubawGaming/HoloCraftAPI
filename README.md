@@ -58,6 +58,10 @@ As you can see at the end I used `.applyChanges()`. In order for the changes you
 
 ## ItemDisplay example with rotate animation 
 
+Let's make a rotating block around the x-axis.
+
+I will use ITEM_DISPLAY instead of BLOCK_DISPLAY because the rotation for BLOCK_DISPLAY does not rotate the block relative to the center.
+
 ```java
 HologramManager hologramManager = HologramManager.getInstance();
 Hologram hologram = hologramManager.createHologram(HologramType.ITEM_DISPLAY, player.getLocation());
