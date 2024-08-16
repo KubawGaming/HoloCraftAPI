@@ -8,7 +8,7 @@ import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.kubaw208.Hologram;
+import me.kubaw208.structs.Hologram;
 import me.kubaw208.data.BlockDisplayData;
 import me.kubaw208.data.Data;
 import me.kubaw208.data.ItemDisplayData;
@@ -40,28 +40,28 @@ public class EntityMetadataPacket extends PacketContainer {
         getIntegers().write(0, hologram.getEntityID());
 
         if(data instanceof TextDisplayData textDisplayData) {
-            values.addAll(List.of(
+            values.add(
                     new WrappedDataValue(
                             23, //text
                             WrappedDataWatcher.Registry.getChatComponentSerializer(),
                             WrappedChatComponent.fromJson(JSONComponentSerializer.json().serialize(Utils.hexComponent(
                                     hologram.isPlaceholdersEnabled() ? PlaceholderAPI.setPlaceholders(receiver, textDisplayData.getText()) : textDisplayData.getText()
                             ))).getHandle()
-                    )));
+                    ));
         } else if(data instanceof BlockDisplayData blockDisplayData) {
-            values.addAll(List.of(
+            values.add(
                     new WrappedDataValue(
                             23, //block
                             WrappedDataWatcher.Registry.get(MinecraftReflection.getIBlockDataClass()),
                             WrappedBlockData.createData(blockDisplayData.getBlock()).getHandle()
-                    )));
+                    ));
         } else if(data instanceof ItemDisplayData itemDisplayData) {
-            values.addAll(List.of(
+            values.add(
                     new WrappedDataValue(
                             23, //block
                             WrappedDataWatcher.Registry.get(MinecraftReflection.getItemStackClass()),
                             MinecraftReflection.getMinecraftItemStack(new ItemStack(itemDisplayData.getItem()))
-                    )));
+                    ));
         }
 
         getDataValueCollectionModifier().write(0, values);

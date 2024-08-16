@@ -1,7 +1,7 @@
 package me.kubaw208.listeners.custom;
 
 import lombok.Getter;
-import me.kubaw208.Hologram;
+import me.kubaw208.structs.Hologram;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

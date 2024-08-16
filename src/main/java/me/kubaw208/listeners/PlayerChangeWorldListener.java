@@ -1,6 +1,6 @@
 package me.kubaw208.listeners;
 
-import me.kubaw208.Hologram;
+import me.kubaw208.structs.Hologram;
 import me.kubaw208.api.HologramManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

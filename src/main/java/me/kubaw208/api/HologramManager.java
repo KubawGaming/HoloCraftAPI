@@ -1,7 +1,7 @@
 package me.kubaw208.api;
 
 import lombok.Getter;
-import me.kubaw208.Hologram;
+import me.kubaw208.structs.Hologram;
 import me.kubaw208.enums.HologramType;
 import me.kubaw208.listeners.PlayerChangeWorldListener;
 import me.kubaw208.listeners.PlayerJoinListener;
@@ -33,11 +33,12 @@ public class HologramManager {
     private int placeholdersUpdaterIntervalInTicks;
 
     public HologramManager(Plugin plugin) {
-        this.plugin = plugin;
+        HologramManager.plugin = plugin;
         instance = this;
 
         for(Hologram hologram : new ArrayList<>(holograms)) {
-            if(hologram.isHideOnUnload()) deleteHologram(hologram);
+            if(hologram.isHideOnUnload())
+                deleteHologram(hologram);
         }
 
         registerListeners(new PlayerJoinListener(), new PlayerQuitListener(), new PlayerChangeWorldListener());

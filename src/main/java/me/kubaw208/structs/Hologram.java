@@ -1,4 +1,4 @@
-package me.kubaw208;
+package me.kubaw208.structs;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -20,6 +20,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Hologram {
@@ -161,6 +162,72 @@ public class Hologram {
     }
 
     /**
+     * Shows hologram for specific players
+     * @see #showHologram(Player)
+     */
+    public Hologram showHologram(Player... players) {
+        for(Player player : players) {
+            showHologram(player);
+        }
+        return this;
+    }
+
+    /**
+     * Shows hologram for specific players
+     * @see #showHologram(Player, boolean)
+     */
+    public Hologram showHologram(boolean force, Player... players) {
+        for(Player player : players) {
+            showHologram(player, force);
+        }
+        return this;
+    }
+
+    /**
+     * Shows hologram for specific players
+     * @see #showHologram(Player)
+     */
+    public Hologram showHologram(List<Player> players) {
+        for(Player player : players) {
+            showHologram(player);
+        }
+        return this;
+    }
+
+    /**
+     * Shows hologram for specific players
+     * @see #showHologram(Player, boolean)
+     */
+    public Hologram showHologram(List<Player> players, boolean force) {
+        for(Player player : players) {
+            showHologram(player, force);
+        }
+        return this;
+    }
+
+    /**
+     * Shows hologram for specific players
+     * @see #showHologram(Player)
+     */
+    public Hologram showHologram(Collection<? extends Player> players) {
+        for(Player player : players) {
+            showHologram(player);
+        }
+        return this;
+    }
+
+    /**
+     * Shows hologram for specific players
+     * @see #showHologram(Player)
+     */
+    public Hologram showHologram(Collection<? extends Player> players, boolean force) {
+        for(Player player : players) {
+            showHologram(player, force);
+        }
+        return this;
+    }
+
+    /**
      * Hides hologram for specific player if custom event of hiding hologram is not canceled
      * If player has not seen a hologram before, nothing will be done
      */
@@ -198,6 +265,72 @@ public class Hologram {
 
         if(player.getWorld().equals(location.getWorld())) { //Not need to send hologram packet for player if he is in other world
             protocolManager.sendServerPacket(player, new RemoveEntitiesPacket(List.of(entityID)));
+        }
+        return this;
+    }
+
+    /**
+     * Hides hologram for specific players
+     * @see #hideHologram(Player)
+     */
+    public Hologram hideHologram(Player... players) {
+        for(Player player : players) {
+            hideHologram(player);
+        }
+        return this;
+    }
+
+    /**
+     * Hides hologram for specific players
+     * @see #hideHologram(Player, boolean)
+     */
+    public Hologram hideHologram(boolean force, Player... players) {
+        for(Player player : players) {
+            hideHologram(player, force);
+        }
+        return this;
+    }
+
+    /**
+     * Hides hologram for specific players
+     * @see #hideHologram(Player)
+     */
+    public Hologram hideHologram(List<Player> players) {
+        for(Player player : players) {
+            hideHologram(player);
+        }
+        return this;
+    }
+
+    /**
+     * Hides hologram for specific players
+     * @see #hideHologram(Player, boolean)
+     */
+    public Hologram hideHologram(List<Player> players, boolean force) {
+        for(Player player : players) {
+            hideHologram(player, force);
+        }
+        return this;
+    }
+
+    /**
+     * Hides hologram for specific players
+     * @see #hideHologram(Player)
+     */
+    public Hologram hideHologram(Collection<? extends Player> players) {
+        for(Player player : players) {
+            hideHologram(player);
+        }
+        return this;
+    }
+
+    /**
+     * Hides hologram for specific players
+     * @see #hideHologram(Player, boolean)
+     */
+    public Hologram hideHologram(Collection<? extends Player> players, boolean force) {
+        for(Player player : players) {
+            hideHologram(player, force);
         }
         return this;
     }
