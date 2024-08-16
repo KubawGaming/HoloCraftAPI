@@ -1,35 +1,37 @@
 package me.kubaw208.data;
 
 import lombok.Getter;
-import me.kubaw208.structs.Hologram;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import me.kubaw208.enums.HologramBillboard;
+import me.kubaw208.structs.Hologram;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 /**
  * Represents "Display" metadata in ProtocolLib wiki: https://wiki.vg/Entity_metadata#Display
  */
-@Getter
+@Getter @Accessors(chain=true)
 public class Data {
 
-    protected Hologram hologram;
-    private int interpolationDelay;
-    private int transformationInterpolationDuration;
-    private int positionOrRotationInterpolationDuration;
-    private final Vector3f translation;
+    @Getter protected Hologram hologram;
+    @Setter private int interpolationDelay;
+    @Setter private int transformationInterpolationDuration;
+    @Setter private int positionOrRotationInterpolationDuration;
+    @Setter private Vector3f translation;
     private final Vector3f scale;
     private final Quaternionf rotation;
     private double xRotation;
     private double yRotation;
     private double zRotation;
-    private HologramBillboard billboard;
-    private int brightnessOverride;
-    private float viewRange;
-    private float shadowRadius;
-    private float shadowStrength;
-    private float width;
-    private float height;
-    private int glowColorOverride;
+    @Setter private HologramBillboard billboard;
+    @Setter private int brightnessOverride;
+    @Setter private float viewRange;
+    @Setter private float shadowRadius;
+    @Setter private float shadowStrength;
+    @Setter private float width;
+    @Setter private float height;
+    @Setter private int glowColorOverride;
 
     public Data() {
         this.interpolationDelay = 0;
@@ -78,33 +80,8 @@ public class Data {
         return itemDisplayData;
     }
 
-    public Data setInterpolationDelay(int interpolationDelay) {
-        this.interpolationDelay = interpolationDelay;
-        return this;
-    }
-
-    public Data setTransformation(int transformation) {
-        this.transformationInterpolationDuration = transformation;
-        return this;
-    }
-
-    public Data setPositionOrRotationInterpolationDuration(int positionOrRotationInterpolationDuration) {
-        this.positionOrRotationInterpolationDuration = positionOrRotationInterpolationDuration;
-        return this;
-    }
-
-    public Data setTranslation(Vector3f vector3f) {
-        this.translation.set(vector3f);
-        return this;
-    }
-
     public Data setScale(float x, float y, float z) {
         this.scale.set(x, y, z);
-        return this;
-    }
-
-    public Data setBillboard(HologramBillboard billboard) {
-        this.billboard = billboard;
         return this;
     }
 
@@ -130,45 +107,6 @@ public class Data {
         angle %= 360;
         if(angle < 0) angle += 360;
         return angle;
-    }
-
-    public Data setBrightnessOverride(int brightnessOverride) {
-        this.brightnessOverride = brightnessOverride;
-        return this;
-    }
-
-    public Data setViewRange(float viewRange) {
-        this.viewRange = viewRange;
-        return this;
-    }
-
-    public Data setShadowRadius(float shadowRadius) {
-        this.shadowRadius = shadowRadius;
-        return this;
-    }
-
-    public Data setShadowStrength(float shadowStrength) {
-        this.shadowStrength = shadowStrength;
-        return this;
-    }
-
-    public Data setWidth(float width) {
-        this.width = width;
-        return this;
-    }
-
-    public Data setHeight(float height) {
-        this.height = height;
-        return this;
-    }
-
-    public Data setGlowColorOverride(int glowColorOverride) {
-        this.glowColorOverride = glowColorOverride;
-        return this;
-    }
-
-    public Hologram getHologram() {
-        return hologram;
     }
 
 }

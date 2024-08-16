@@ -3,6 +3,7 @@ package me.kubaw208.structs;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
+import lombok.AccessLevel;
 import lombok.Getter;
 import me.kubaw208.data.BlockDisplayData;
 import me.kubaw208.data.Data;
@@ -13,7 +14,10 @@ import me.kubaw208.listeners.custom.HologramApplyChangesEvent;
 import me.kubaw208.listeners.custom.HologramHideEvent;
 import me.kubaw208.listeners.custom.HologramShowEvent;
 import me.kubaw208.listeners.custom.HologramTogglePlaceholdersEnabledEvent;
-import me.kubaw208.packets.*;
+import me.kubaw208.packets.EntityMetadataPacket;
+import me.kubaw208.packets.EntitySpawnPacket;
+import me.kubaw208.packets.EntityTeleportPacket;
+import me.kubaw208.packets.RemoveEntitiesPacket;
 import me.kubaw208.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -23,22 +27,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
 public class Hologram {
 
 
-    private final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
+    @Getter(AccessLevel.NONE) private final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
     /** Previous hologram location. If hologram is just spawned, previous location will have the same location as getLocation() */
-    @Getter private Location previousLocation;
+     private Location previousLocation;
     /** Current hologram location */
-    @Getter private Location location;
+    private Location location;
     /** Hologram entity ID that is sent to clients */
-    @Getter private final int entityID;
+    private final int entityID;
     /** List players who should see specific hologram */
-    @Getter private final ArrayList<Player> playersSeeingHologram = new ArrayList<>();
+    private final ArrayList<Player> playersSeeingHologram = new ArrayList<>();
     /** Hologram data that can be applied to hologram */
-    @Getter private final Data data;
+    private final Data data;
     /** Hologram type (text, item or block display) */
-    @Getter private final HologramType type;
+    private final HologramType type;
     /**
      * If true, removes hologram after plugin reload to prevent visibility of holograms without possibility of removal for players.
      * If developer wants to keep hologram visible (for example saved Hologram object and still can operate on it),
@@ -47,11 +52,11 @@ public class Hologram {
      * This can cause errors for example if player change world, holograms won't be re-showed for him!
      * If you want to keep Hologram object after plugin reload, you should add Hologram to the list in the HologramManager again.
      */
-    @Getter private boolean hideOnUnload = true;
+    private boolean hideOnUnload = true;
     /** Should placeholders work on hologram */
-    @Getter private boolean placeholdersEnabled = false;
+    private boolean placeholdersEnabled = false;
     /** Should hologram be visible for all players, ignoring getPlayersSeeingHologram() list */
-    @Getter private boolean publicVisible = false;
+    private boolean publicVisible = false;
 
     public Hologram(HologramType type, Location location) {
         if(type == null) throw new NullPointerException("Hologram type cannot be null! Use HologramType enum to choose correct hologram type.");

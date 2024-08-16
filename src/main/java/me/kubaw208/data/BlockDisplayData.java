@@ -1,26 +1,21 @@
 package me.kubaw208.data;
 
 import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import me.kubaw208.structs.Hologram;
 import org.bukkit.Material;
 
-@Getter
+@Setter @Getter @Accessors(chain=true)
 public class BlockDisplayData extends Data {
 
+    /** Sets new block for hologram to be displayed */
     private Material block;
 
     public BlockDisplayData(Hologram hologram) {
         super();
         this.hologram = hologram;
         this.setScale(0.25f, 0.25f, 0.25f);
-    }
-
-    /**
-     * Sets new block for hologram to be displayed
-     */
-    public BlockDisplayData setBlock(Material block) {
-        this.block = block;
-        return this;
     }
 
 }
