@@ -56,6 +56,35 @@ hologram.showHologram(player)
 
 As you can see at the end I used `.applyChanges()`. In order for the changes you make to be approved and shown to players, you must use this method. Use `.applyChanges()` when you make changes to Data or when you change hologram location using `hologram.setLocation(location);`.
 
+## ItemDisplay example with rotate animation 
+
+```java
+HologramManager hologramManager = HologramManager.getInstance();
+Hologram hologram = hologramManager.createHologram(HologramType.ITEM_DISPLAY, player.getLocation());
+AtomicReference<Double> xRotation = new AtomicReference<>(0.0);
+
+hologram
+    .getData()
+        .asItemDisplayData()
+            .setItem(Material.DIAMOND_BLOCK)
+    .getHologram()
+    // Setting this to true allows every player - even people joining the server - to always see the hologram
+    // Method setPublicVisible(boolean) shouldn't be used when .setItem(Material) is not set yet!
+    .setPublicVisible(true)
+    .applyChanges();
+
+Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+    hologram
+    // Rotation is available for any type of hologram so we don't have to go into ItemDisplayData
+    .getData()
+        .setRotation(xRotation.get(), 0, 0)
+    .getHologram()
+    .applyChanges();
+
+    xRotation.set(xRotation.get() + 0.3);
+}, 0, 1);
+```
+
 ## Gradle:
 
 ```gradle
