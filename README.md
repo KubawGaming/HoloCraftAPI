@@ -5,6 +5,10 @@
 An easy-to-use library that allows you to create holograms using packets.
 The code was tested on minecraft version 1.20.4. I did not check compatibility with other versions!
 
+## Plugins required
+
+If you want to use this API so that it does not throw errors your server must have the <a href="https://www.spigotmc.org/resources/packetevents-api.80279/" target="_blank">packetevents</a> plugin installed
+
 ## Example of use:
 
 To get started, you need to know a few things. The HologramManager class allows you to create and delete holograms. It also allows you to set some GLOBAL settings that work for all holograms.
