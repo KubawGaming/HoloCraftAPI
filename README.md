@@ -7,7 +7,7 @@ The code was tested on minecraft version 1.20.4. I did not check compatibility w
 
 ## Plugins required
 
-If you want to use this API so that it does not throw errors your server must have the <a href="https://www.spigotmc.org/resources/packetevents-api.80279/" target="_blank">packetevents</a> plugin installed
+If you want to use this API so that it does not throw errors your server must have the <a href="https://www.spigotmc.org/resources/packetevents-api.80279/" target="_blank">packetevents</a> plugin installed.
 
 ## Example of use:
 
