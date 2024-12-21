@@ -1,10 +1,10 @@
-package me.kubaw208.data;
+package me.kubaw208.holocraftapi.data;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import me.kubaw208.enums.HologramAlignment;
-import me.kubaw208.structs.Hologram;
+import me.kubaw208.holocraftapi.enums.HologramAlignment;
+import me.kubaw208.holocraftapi.structs.Hologram;
 
 @Getter @Accessors(chain=true)
 public class TextDisplayData extends Data {

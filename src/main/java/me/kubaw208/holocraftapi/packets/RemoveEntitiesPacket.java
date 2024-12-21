@@ -1,4 +1,4 @@
-package me.kubaw208.packets;
+package me.kubaw208.holocraftapi.packets;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;

@@ -1,10 +1,10 @@
-package me.kubaw208.data;
+package me.kubaw208.holocraftapi.data;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import me.kubaw208.enums.HologramBillboard;
-import me.kubaw208.structs.Hologram;
+import me.kubaw208.holocraftapi.enums.HologramBillboard;
+import me.kubaw208.holocraftapi.structs.Hologram;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 

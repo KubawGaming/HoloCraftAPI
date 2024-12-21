@@ -1,14 +1,14 @@
-package me.kubaw208.api;
+package me.kubaw208.holocraftapi.api;
 
 import lombok.Getter;
-import me.kubaw208.structs.Hologram;
-import me.kubaw208.enums.HologramType;
-import me.kubaw208.listeners.PlayerChangeWorldListener;
-import me.kubaw208.listeners.PlayerJoinListener;
-import me.kubaw208.listeners.PlayerQuitListener;
-import me.kubaw208.listeners.custom.HologramCreateEvent;
-import me.kubaw208.listeners.custom.HologramDeleteEvent;
-import me.kubaw208.utils.Utils;
+import me.kubaw208.holocraftapi.structs.Hologram;
+import me.kubaw208.holocraftapi.enums.HologramType;
+import me.kubaw208.holocraftapi.listeners.PlayerChangeWorldListener;
+import me.kubaw208.holocraftapi.listeners.PlayerJoinListener;
+import me.kubaw208.holocraftapi.listeners.PlayerQuitListener;
+import me.kubaw208.holocraftapi.listeners.custom.HologramCreateEvent;
+import me.kubaw208.holocraftapi.listeners.custom.HologramDeleteEvent;
+import me.kubaw208.holocraftapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

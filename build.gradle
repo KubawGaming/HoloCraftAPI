@@ -2,8 +2,8 @@ plugins {
     id 'java'
 }
 
-group = 'me.kubaw208.main'
-version = '1.0.3'
+group = 'me.kubaw208'
+version = '1.0.4'
 
 repositories {
     mavenCentral()

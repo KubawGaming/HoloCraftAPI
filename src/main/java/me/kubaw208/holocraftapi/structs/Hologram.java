@@ -1,24 +1,24 @@
-package me.kubaw208.structs;
+package me.kubaw208.holocraftapi.structs;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import lombok.AccessLevel;
 import lombok.Getter;
-import me.kubaw208.data.BlockDisplayData;
-import me.kubaw208.data.Data;
-import me.kubaw208.data.ItemDisplayData;
-import me.kubaw208.data.TextDisplayData;
-import me.kubaw208.enums.HologramType;
-import me.kubaw208.listeners.custom.HologramApplyChangesEvent;
-import me.kubaw208.listeners.custom.HologramHideEvent;
-import me.kubaw208.listeners.custom.HologramShowEvent;
-import me.kubaw208.listeners.custom.HologramTogglePlaceholdersEnabledEvent;
-import me.kubaw208.packets.EntityMetadataPacket;
-import me.kubaw208.packets.EntitySpawnPacket;
-import me.kubaw208.packets.EntityTeleportPacket;
-import me.kubaw208.packets.RemoveEntitiesPacket;
-import me.kubaw208.utils.Utils;
+import me.kubaw208.holocraftapi.data.BlockDisplayData;
+import me.kubaw208.holocraftapi.data.Data;
+import me.kubaw208.holocraftapi.data.ItemDisplayData;
+import me.kubaw208.holocraftapi.data.TextDisplayData;
+import me.kubaw208.holocraftapi.enums.HologramType;
+import me.kubaw208.holocraftapi.listeners.custom.HologramApplyChangesEvent;
+import me.kubaw208.holocraftapi.listeners.custom.HologramHideEvent;
+import me.kubaw208.holocraftapi.listeners.custom.HologramShowEvent;
+import me.kubaw208.holocraftapi.listeners.custom.HologramTogglePlaceholdersEnabledEvent;
+import me.kubaw208.holocraftapi.packets.EntityMetadataPacket;
+import me.kubaw208.holocraftapi.packets.EntitySpawnPacket;
+import me.kubaw208.holocraftapi.packets.EntityTeleportPacket;
+import me.kubaw208.holocraftapi.packets.RemoveEntitiesPacket;
+import me.kubaw208.holocraftapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -33,7 +33,7 @@ public class Hologram {
 
     @Getter(AccessLevel.NONE) private final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
     /** Previous hologram location. If hologram is just spawned, previous location will have the same location as getLocation() */
-     private Location previousLocation;
+    private Location previousLocation;
     /** Current hologram location */
     private Location location;
     /** Hologram entity ID that is sent to clients */
@@ -47,7 +47,7 @@ public class Hologram {
     /**
      * If true, removes hologram after plugin reload to prevent visibility of holograms without possibility of removal for players.
      * If developer wants to keep hologram visible (for example saved Hologram object and still can operate on it),
-     * he should set this Boolean to false which should prevent automatically unloading.
+     * he should set this Boolean to false which should prevent automatically deleting hologram from the world.
      * @WARNING! After plugin load, holograms list in ProtocolManager will be cleared!
      * This can cause errors for example if player change world, holograms won't be re-showed for him!
      * If you want to keep Hologram object after plugin reload, you should add Hologram to the list in the HologramManager again.

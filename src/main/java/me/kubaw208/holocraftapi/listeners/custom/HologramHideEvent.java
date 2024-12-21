@@ -1,21 +1,27 @@
-package me.kubaw208.listeners.custom;
+package me.kubaw208.holocraftapi.listeners.custom;
 
 import lombok.Getter;
-import me.kubaw208.structs.Hologram;
+import me.kubaw208.holocraftapi.structs.Hologram;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class HologramApplyChangesEvent extends Event implements Cancellable {
+public class HologramHideEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
+    @Getter private final Player player;
     private boolean isCancelled;
-    /** Hologram to which changes have been updated */
+    /** Hologram hidden from the player */
     @Getter private final Hologram hologram;
+    /** If true, ignores if event is canceled or not and always will hide hologram for player. */
+    @Getter private boolean force;
 
-    public HologramApplyChangesEvent(Hologram hologram) {
+    public HologramHideEvent(Hologram hologram, Player player, boolean force) {
         this.hologram = hologram;
+        this.player = player;
+        this.force = force;
     }
 
     @Override

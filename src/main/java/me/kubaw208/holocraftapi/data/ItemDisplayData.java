@@ -1,9 +1,9 @@
-package me.kubaw208.data;
+package me.kubaw208.holocraftapi.data;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import me.kubaw208.structs.Hologram;
+import me.kubaw208.holocraftapi.structs.Hologram;
 import org.bukkit.Material;
 
 @Setter @Getter @Accessors(chain=true)

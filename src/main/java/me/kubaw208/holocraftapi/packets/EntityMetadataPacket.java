@@ -1,4 +1,4 @@
-package me.kubaw208.packets;
+package me.kubaw208.holocraftapi.packets;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
@@ -8,12 +8,12 @@ import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.kubaw208.structs.Hologram;
-import me.kubaw208.data.BlockDisplayData;
-import me.kubaw208.data.Data;
-import me.kubaw208.data.ItemDisplayData;
-import me.kubaw208.data.TextDisplayData;
-import me.kubaw208.utils.Utils;
+import me.kubaw208.holocraftapi.structs.Hologram;
+import me.kubaw208.holocraftapi.data.BlockDisplayData;
+import me.kubaw208.holocraftapi.data.Data;
+import me.kubaw208.holocraftapi.data.ItemDisplayData;
+import me.kubaw208.holocraftapi.data.TextDisplayData;
+import me.kubaw208.holocraftapi.utils.Utils;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

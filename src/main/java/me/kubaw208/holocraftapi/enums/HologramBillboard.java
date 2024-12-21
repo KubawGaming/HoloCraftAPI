@@ -1,4 +1,4 @@
-package me.kubaw208.enums;
+package me.kubaw208.holocraftapi.enums;
 
 import lombok.Getter;
 

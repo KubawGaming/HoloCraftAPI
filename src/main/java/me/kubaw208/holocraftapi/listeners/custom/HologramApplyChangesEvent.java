@@ -1,23 +1,22 @@
-package me.kubaw208.listeners.custom;
+package me.kubaw208.holocraftapi.listeners.custom;
 
 import lombok.Getter;
-import me.kubaw208.structs.Hologram;
+import me.kubaw208.holocraftapi.structs.Hologram;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class HologramCreateEvent extends Event implements Cancellable {
+public class HologramApplyChangesEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
     private boolean isCancelled;
-    /** Created hologram */
+    /** Hologram to which changes have been updated */
     @Getter private final Hologram hologram;
 
-    public HologramCreateEvent(Hologram hologram) {
+    public HologramApplyChangesEvent(Hologram hologram) {
         this.hologram = hologram;
     }
-
 
     @Override
     public @NotNull HandlerList getHandlers() {
