@@ -7,17 +7,15 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class HologramTogglePlaceholdersEnabledEvent extends Event implements Cancellable {
+public class HologramChangeLocationEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
     private boolean isCancelled;
-    /** Hologram to which the action of placeholders is toggled */
+    /** Changed hologram */
     @Getter private final Hologram hologram;
-    public final boolean switchedTo;
 
-    public HologramTogglePlaceholdersEnabledEvent(Hologram hologram, boolean switchedTo) {
+    public HologramChangeLocationEvent(Hologram hologram) {
         this.hologram = hologram;
-        this.switchedTo = switchedTo;
     }
 
     @Override

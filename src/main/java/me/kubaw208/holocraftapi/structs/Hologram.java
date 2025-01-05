@@ -10,10 +10,7 @@ import me.kubaw208.holocraftapi.data.Data;
 import me.kubaw208.holocraftapi.data.ItemDisplayData;
 import me.kubaw208.holocraftapi.data.TextDisplayData;
 import me.kubaw208.holocraftapi.enums.HologramType;
-import me.kubaw208.holocraftapi.listeners.custom.HologramApplyChangesEvent;
-import me.kubaw208.holocraftapi.listeners.custom.HologramHideEvent;
-import me.kubaw208.holocraftapi.listeners.custom.HologramShowEvent;
-import me.kubaw208.holocraftapi.listeners.custom.HologramTogglePlaceholdersEnabledEvent;
+import me.kubaw208.holocraftapi.listeners.custom.*;
 import me.kubaw208.holocraftapi.packets.EntityMetadataPacket;
 import me.kubaw208.holocraftapi.packets.EntitySpawnPacket;
 import me.kubaw208.holocraftapi.packets.EntityTeleportPacket;
@@ -25,11 +22,11 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 @Getter
 public class Hologram {
-
 
     @Getter(AccessLevel.NONE) private final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
     /** Previous hologram location. If hologram is just spawned, previous location will have the same location as getLocation() */
@@ -57,6 +54,8 @@ public class Hologram {
     private boolean placeholdersEnabled = false;
     /** Should hologram be visible for all players, ignoring getPlayersSeeingHologram() list */
     private boolean publicVisible = false;
+    /** Custom data for hologram that can be used for any purpose */
+    private final HashMap<String, Object> customData = new HashMap<>();
 
     public Hologram(HologramType type, Location location) {
         if(type == null) throw new NullPointerException("Hologram type cannot be null! Use HologramType enum to choose correct hologram type.");
@@ -96,7 +95,7 @@ public class Hologram {
     }
 
     /**
-     * Applies changes made in hologram data for each player who is seeing hologram
+     * Applies changes made in hologram data for each player seeing hologram
      */
     public void applyChanges() {
         HologramApplyChangesEvent customEvent = new HologramApplyChangesEvent(this);
@@ -123,7 +122,7 @@ public class Hologram {
     }
 
     /**
-     * Shows hologram for specific player if custom event of showing hologram is not canceled
+     * Shows hologram for a specific player if custom event of showing hologram is not canceled
      * If player has seen a hologram before, nothing will be done
      */
     public Hologram showHologram(Player player) {
@@ -146,7 +145,7 @@ public class Hologram {
 
     /**
      * Shows hologram for specific player
-     * @param force - if true, ignores if event is canceled and forcing send packet to show hologram for player if he is on the same world as hologram
+     * @param force - if true, ignores if event is canceled and forcing to send a packet to show hologram for player if he is on the same world as hologram
      */
     public Hologram showHologram(Player player, boolean force) {
         if(!force && playersSeeingHologram.contains(player)) return this;
@@ -255,7 +254,7 @@ public class Hologram {
 
     /**
      * Hides hologram for specific player
-     * @param force - if true, ignores if event is canceled and forcing send packet to hide hologram for player if he is on the same world as hologram
+     * @param force - if true, ignores if event is canceled and forcing to send a packet to hide hologram for player if he is on the same world as hologram
      */
     public Hologram hideHologram(Player player, boolean force) {
         if(!force && !playersSeeingHologram.contains(player)) return this;
@@ -366,6 +365,12 @@ public class Hologram {
      * Sets hologram new location
      */
     public Hologram setLocation(Location location) {
+        HologramChangeLocationEvent customEvent = new HologramChangeLocationEvent(this);
+
+        customEvent.callEvent();
+
+        if(customEvent.isCancelled()) return this;
+
         this.previousLocation = this.location;
         this.location = location;
         return this;

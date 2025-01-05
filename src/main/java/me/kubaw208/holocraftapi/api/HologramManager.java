@@ -1,13 +1,14 @@
 package me.kubaw208.holocraftapi.api;
 
 import lombok.Getter;
-import me.kubaw208.holocraftapi.structs.Hologram;
 import me.kubaw208.holocraftapi.enums.HologramType;
 import me.kubaw208.holocraftapi.listeners.PlayerChangeWorldListener;
 import me.kubaw208.holocraftapi.listeners.PlayerJoinListener;
 import me.kubaw208.holocraftapi.listeners.PlayerQuitListener;
+import me.kubaw208.holocraftapi.listeners.WorldDeleteListener;
 import me.kubaw208.holocraftapi.listeners.custom.HologramCreateEvent;
 import me.kubaw208.holocraftapi.listeners.custom.HologramDeleteEvent;
+import me.kubaw208.holocraftapi.structs.Hologram;
 import me.kubaw208.holocraftapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,6 +17,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class HologramManager {
@@ -41,12 +44,12 @@ public class HologramManager {
                 deleteHologram(hologram);
         }
 
-        registerListeners(new PlayerJoinListener(), new PlayerQuitListener(), new PlayerChangeWorldListener());
-        setPlaceholdersUpdaterTaskInterval(200); //Default refresh placeholders in all holograms every 10 seconds
+        registerListeners(new PlayerJoinListener(), new PlayerQuitListener(), new PlayerChangeWorldListener(), new WorldDeleteListener());
+        setPlaceholdersUpdaterTaskInterval(200); // Default refresh placeholders in all holograms every 10 seconds
     }
 
     /**
-     * Creates new hologram depending on hologram type
+     * Creates new hologram depending on a hologram type
      * @returns new hologram instance or null if custom event of creating hologram is canceled
      */
     public Hologram createHologram(HologramType hologramType, Location location) {
@@ -74,7 +77,28 @@ public class HologramManager {
         for(Player player : new ArrayList<>(hologram.getPlayersSeeingHologram())) {
             hologram.hideHologram(player);
         }
+
         holograms.remove(hologram);
+    }
+
+    /**
+     * Deletes multiple holograms
+     * @see #deleteHologram(Hologram)
+     */
+    public void deleteHolograms(List<Hologram> holograms) {
+        for(Hologram hologram : holograms) {
+            this.deleteHologram(hologram);
+        }
+    }
+
+    /**
+     * Deletes multiple holograms
+     * @see #deleteHologram(Hologram)
+     */
+    public void deleteHolograms(Collection<Hologram> holograms) {
+        for(Hologram hologram : holograms) {
+            this.deleteHologram(hologram);
+        }
     }
 
     /**

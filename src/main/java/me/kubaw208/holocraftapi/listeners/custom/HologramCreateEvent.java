@@ -18,7 +18,6 @@ public class HologramCreateEvent extends Event implements Cancellable {
         this.hologram = hologram;
     }
 
-
     @Override
     public @NotNull HandlerList getHandlers() {
         return handlers;
