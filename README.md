@@ -83,11 +83,11 @@ hologram
 
 Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
     hologram
-    // Rotation is available for any type of hologram so we don't have to go into ItemDisplayData
-    .getData()
-        .setRotation(xRotation.get(), 0, 0)
-    .getHologram()
-    .applyChanges();
+        // Rotation is available for any type of hologram so we don't have to go into ItemDisplayData
+        .getData()
+            .setRotation(xRotation.get(), 0, 0)
+        .getHologram()
+        .applyChanges();
 
     xRotation.set(xRotation.get() + 0.3);
 }, 0, 1);
