@@ -17,16 +17,16 @@ import java.util.HashMap;
 /**
  * A custom class for storing hologram data. Allows you to apply data to the selected hologram.
  */
-@Getter
+@Getter @Setter
 public class HologramData {
 
     private HologramType hologramType;
-    @Setter private Data data;
-    @Setter private Location location;
-    @Setter private boolean hideOnUnload = true;
-    @Setter private boolean placeholdersEnabled = false;
-    @Setter private boolean publicVisible = false;
-    @Setter private HashMap<String, Object> customData = new HashMap<>();
+    private Data data;
+    private Location location;
+    private boolean hideOnUnload = true;
+    private boolean placeholdersEnabled = false;
+    private boolean publicVisible = false;
+    private HashMap<String, Object> customData = new HashMap<>();
 
     public HologramData(HologramType hologramType, Location location) {
         this.hologramType = hologramType;
@@ -40,14 +40,8 @@ public class HologramData {
     }
 
     public HologramData(HashMap<String, Object> copiedData) {
-        if(copiedData.get("publicVisible") != null)
-            setPublicVisible((boolean) copiedData.get("publicVisible"));
-
-        if(copiedData.get("placeholdersEnabled") != null)
-            setPlaceholdersEnabled((boolean) copiedData.get("placeholdersEnabled"));
-
-        if(copiedData.get("hideOnUnload") != null)
-            setHideOnUnload((boolean) copiedData.get("hideOnUnload"));
+        if(copiedData.get("hologramType") != null)
+            hologramType = HologramType.valueOf(copiedData.get("hologramType").toString().toUpperCase());
 
         if(copiedData.get("location") != null) {
             HashMap<String, Object> locationData = (HashMap<String, Object>) copiedData.get("location");
@@ -59,6 +53,18 @@ public class HologramData {
                     locationData.get("z") != null ? (double) locationData.get("z") : 0.0
             );
         }
+
+        if(copiedData.get("hideOnUnload") != null)
+            setHideOnUnload((boolean) copiedData.get("hideOnUnload"));
+
+        if(copiedData.get("placeholdersEnabled") != null)
+            setPlaceholdersEnabled((boolean) copiedData.get("placeholdersEnabled"));
+
+        if(copiedData.get("publicVisible") != null)
+            setPublicVisible((boolean) copiedData.get("publicVisible"));
+
+        if(copiedData.get("customData") != null)
+            setCustomData((HashMap<String, Object>) copiedData.get("customData"));
 
         if(copiedData.get("data") != null) {
             HashMap<String, Object> data = (HashMap<String, Object>) copiedData.get("data");
