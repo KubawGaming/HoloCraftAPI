@@ -40,8 +40,13 @@ public class HologramData {
     }
 
     public HologramData(HashMap<String, Object> copiedData) {
-        if(copiedData.get("hologramType") != null)
-            hologramType = HologramType.valueOf(copiedData.get("hologramType").toString().toUpperCase());
+        hologramType = HologramType.valueOf(copiedData.get("hologramType").toString().toUpperCase());
+
+        switch(hologramType) {
+            case TEXT_DISPLAY -> this.data = new TextDisplayData();
+            case BLOCK_DISPLAY -> this.data = new BlockDisplayData();
+            case ITEM_DISPLAY -> this.data = new ItemDisplayData();
+        }
 
         if(copiedData.get("location") != null) {
             HashMap<String, Object> locationData = (HashMap<String, Object>) copiedData.get("location");
@@ -156,11 +161,11 @@ public class HologramData {
      * Many changes applied should be reloaded by using hologram.applyChanges(); method.
      */
     public void applyData(Hologram hologram) {
-        hologram.setLocation(location);
+        hologram.setLocation(location.clone());
         hologram.setHideOnLoad(hideOnUnload);
         hologram.setPlaceholdersEnabled(placeholdersEnabled);
         hologram.setPublicVisible(publicVisible);
-        hologram.setCustomData(customData);
+        hologram.setCustomData((HashMap<String, Object>) customData.clone());
 
         hologram.getData().setInterpolationDelay(data.getInterpolationDelay());
         hologram.getData().setTransformationInterpolationDuration(data.getTransformationInterpolationDuration());
