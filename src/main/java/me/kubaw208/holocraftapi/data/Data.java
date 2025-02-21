@@ -8,13 +8,15 @@ import me.kubaw208.holocraftapi.structs.Hologram;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import javax.annotation.Nullable;
+
 /**
- * Represents "Display" metadata in ProtocolLib wiki: https://wiki.vg/Entity_metadata#Display
+ * Represents "Display" metadata in <a href="https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Entity_metadata#Display">ProtocolLib wiki</a>
  */
 @Getter @Accessors(chain=true)
-public class Data {
+public class Data implements Cloneable {
 
-    @Getter protected Hologram hologram;
+    @Nullable @Getter protected Hologram hologram;
     @Setter private int interpolationDelay;
     @Setter private int transformationInterpolationDuration;
     @Setter private int positionOrRotationInterpolationDuration;
@@ -54,8 +56,8 @@ public class Data {
     }
 
     /**
-     * Lets you get methods for TextDisplay holograms
-     * @returns Data as TextDisplayData or null if Data is not TextDisplayData
+     * Lets you get methods for TextDisplay holograms.
+     * @returns Data as TextDisplayData or null if Data is not TextDisplayData.
      */
     public TextDisplayData asTextDisplayData() {
         if(!(this instanceof TextDisplayData textDisplayData)) return null;
@@ -63,8 +65,8 @@ public class Data {
     }
 
     /**
-     * Lets you get methods for BlockDisplay holograms
-     * @returns Data as BlockDisplayData or null if Data is not BlockDisplayData
+     * Lets you get methods for BlockDisplay holograms.
+     * @returns Data as BlockDisplayData or null if Data is not BlockDisplayData.
      */
     public BlockDisplayData asBlockDisplayData() {
         if(!(this instanceof BlockDisplayData blockDisplayData)) return null;
@@ -72,8 +74,8 @@ public class Data {
     }
 
     /**
-     * Lets you get methods for ItemDisplay holograms
-     * @returns Data as ItemDisplayData or null if Data is not ItemDisplayData
+     * Lets you get methods for ItemDisplay holograms.
+     * @returns Data as ItemDisplayData or null if Data is not ItemDisplayData.
      */
     public ItemDisplayData asItemDisplayData() {
         if(!(this instanceof ItemDisplayData itemDisplayData)) return null;
@@ -86,7 +88,7 @@ public class Data {
     }
 
     /**
-     * Sets hologram rotation using degrees
+     * Sets hologram rotation using degrees.
      */
     public Data setRotation(double xRotation, double yRotation, double zRotation) {
         this.xRotation = normalizeAngle(xRotation);
@@ -97,16 +99,37 @@ public class Data {
                 (float) Math.toRadians(this.xRotation),
                 (float) Math.toRadians(this.yRotation),
                 (float) Math.toRadians(this.zRotation)).scale(2));
+
         return this;
     }
 
     /**
-     * @returns angle in range [0, 360)
+     * @returns angle in range [0, 360).
      */
     private double normalizeAngle(double angle) {
         angle %= 360;
-        if(angle < 0) angle += 360;
+
+        if(angle < 0)
+            angle += 360;
+
         return angle;
+    }
+
+    /**
+     * Cloning Data will make 'hologram' field null.
+     * @returns a clone of Data object.
+     */
+    @Override
+    public Data clone() {
+        try {
+            Data data = (Data) super.clone();
+
+            data.hologram = null;
+
+            return data;
+        } catch(CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 
 }

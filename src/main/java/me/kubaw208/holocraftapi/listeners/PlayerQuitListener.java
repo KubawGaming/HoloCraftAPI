@@ -16,9 +16,7 @@ public class PlayerQuitListener implements Listener {
         Player player = e.getPlayer();
 
         for(Hologram hologram : hologramManager.getHolograms()) {
-            if(hologram.getPlayersSeeingHologram().contains(player)) {
-                hologram.getPlayersSeeingHologram().remove(player);
-            }
+            hologram.getPlayersSeeingHologram().remove(player);
         }
     }
 

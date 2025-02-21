@@ -8,7 +8,7 @@ import java.util.List;
 public class RemoveEntitiesPacket extends PacketContainer {
 
     /**
-     * Packet which removes entities by their entity IDs
+     * Packet which removes entities by their entity IDs.
      */
     public RemoveEntitiesPacket(List<Integer> entityIDs) {
         super(PacketType.Play.Server.ENTITY_DESTROY);

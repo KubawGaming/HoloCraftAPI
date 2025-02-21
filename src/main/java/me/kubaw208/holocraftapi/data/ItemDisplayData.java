@@ -9,8 +9,13 @@ import org.bukkit.Material;
 @Setter @Getter @Accessors(chain=true)
 public class ItemDisplayData extends Data {
 
-    /** Sets new item for hologram to be displayed */
+    /** Sets new item for hologram to be displayed. */
     private Material item;
+
+    public ItemDisplayData() {
+        super();
+        this.setScale(0.5f, 0.5f, 0.5f);
+    }
 
     public ItemDisplayData(Hologram hologram) {
         super();

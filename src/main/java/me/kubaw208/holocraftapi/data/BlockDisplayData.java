@@ -9,8 +9,13 @@ import org.bukkit.Material;
 @Setter @Getter @Accessors(chain=true)
 public class BlockDisplayData extends Data {
 
-    /** Sets new block for hologram to be displayed */
+    /** Sets new block for hologram to be displayed. */
     private Material block;
+
+    public BlockDisplayData() {
+        super();
+        this.setScale(0.25f, 0.25f, 0.25f);
+    }
 
     public BlockDisplayData(Hologram hologram) {
         super();

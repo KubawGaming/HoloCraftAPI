@@ -11,7 +11,7 @@ public class HologramChangeLocationEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
     private boolean isCancelled;
-    /** Changed hologram */
+    /** Changed hologram. */
     @Getter private final Hologram hologram;
 
     public HologramChangeLocationEvent(Hologram hologram) {

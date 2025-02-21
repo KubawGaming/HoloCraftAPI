@@ -13,7 +13,7 @@ public class HologramHideEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     @Getter private final Player player;
     private boolean isCancelled;
-    /** Hologram hidden from the player */
+    /** Hologram hidden from the player. */
     @Getter private final Hologram hologram;
     /** If true, ignores if event is canceled or not and always will hide hologram for player. */
     @Getter private boolean force;

@@ -11,7 +11,7 @@ public class HologramTogglePlaceholdersEnabledEvent extends Event implements Can
 
     private static final HandlerList handlers = new HandlerList();
     private boolean isCancelled;
-    /** Hologram to which the action of placeholders is toggled */
+    /** Hologram to which the action of placeholders is toggled. */
     @Getter private final Hologram hologram;
     public final boolean switchedTo;
 

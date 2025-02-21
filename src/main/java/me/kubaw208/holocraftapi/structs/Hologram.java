@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import me.kubaw208.holocraftapi.data.BlockDisplayData;
 import me.kubaw208.holocraftapi.data.Data;
 import me.kubaw208.holocraftapi.data.ItemDisplayData;
@@ -29,33 +30,33 @@ import java.util.List;
 public class Hologram {
 
     @Getter(AccessLevel.NONE) private final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
-    /** Previous hologram location. If hologram is just spawned, previous location will have the same location as getLocation() */
+    /** Previous hologram location. If hologram is just spawned, the previous location will have the same location as getLocation(). */
     private Location previousLocation;
-    /** Current hologram location */
+    /** Current hologram location. */
     private Location location;
-    /** Hologram entity ID that is sent to clients */
+    /** Hologram entity ID that is sent to clients. */
     private final int entityID;
-    /** List players who should see specific hologram */
+    /** List players who should see specific hologram. */
     private final ArrayList<Player> playersSeeingHologram = new ArrayList<>();
-    /** Hologram data that can be applied to hologram */
+    /** Hologram data that can be applied to hologram. */
     private final Data data;
-    /** Hologram type (text, item or block display) */
+    /** Hologram type (text, item or block display). */
     private final HologramType type;
     /**
      * If true, removes hologram after plugin reload to prevent visibility of holograms without possibility of removal for players.
-     * If developer wants to keep hologram visible (for example saved Hologram object and still can operate on it),
+     * If a developer wants to keep a hologram visible (for example, saved a Hologram object and still can operate on it),
      * he should set this Boolean to false which should prevent automatically deleting hologram from the world.
-     * @WARNING! After plugin load, holograms list in ProtocolManager will be cleared!
-     * This can cause errors for example if player change world, holograms won't be re-showed for him!
-     * If you want to keep Hologram object after plugin reload, you should add Hologram to the list in the HologramManager again.
+     * @WARNING After plugin load, holograms list in ProtocolManager will be cleared!
+     * This can cause errors, for example, if a player changes world, holograms won't be re-showed for him!
+     * If you want to keep a Hologram object after plugin reload, you should add Hologram to the list in the HologramManager again.
      */
     private boolean hideOnUnload = true;
-    /** Should placeholders work on hologram */
+    /** Should placeholders work on hologram? */
     private boolean placeholdersEnabled = false;
-    /** Should hologram be visible for all players, ignoring getPlayersSeeingHologram() list */
+    /** Should hologram be visible for all players, ignoring getPlayersSeeingHologram() a list? */
     private boolean publicVisible = false;
-    /** Custom data for hologram that can be used for any purpose */
-    private final HashMap<String, Object> customData = new HashMap<>();
+    /** Custom data for hologram that can be used for any purpose. */
+    @Setter private HashMap<String, Object> customData = new HashMap<>();
 
     public Hologram(HologramType type, Location location) {
         if(type == null) throw new NullPointerException("Hologram type cannot be null! Use HologramType enum to choose correct hologram type.");
@@ -73,10 +74,12 @@ public class Hologram {
         }
     }
 
-    /** Disables/Enables refreshing placeholders for holograms who don't use placeholders
-     * Disabling it for specific holograms who don't use placeholders may little optimize server performance
-     * Changing isPlaceholdersEnabled() will automatically update the new state for all players
-     * It's default set as false to prevent unnecessary refreshing */
+    /**
+     * Disables/Enables refreshing placeholders for holograms who don't use placeholders.
+     * Disabling it for specific holograms who don't use placeholders may little optimize server performance.
+     * Changing isPlaceholdersEnabled() will automatically update the new state for all players.
+     * It's default set as false to prevent unnecessary refreshing.
+     */
     public Hologram setPlaceholdersEnabled(boolean placeholdersEnabled) {
         HologramTogglePlaceholdersEnabledEvent customEvent = new HologramTogglePlaceholdersEnabledEvent(this, placeholdersEnabled);
 
@@ -95,7 +98,7 @@ public class Hologram {
     }
 
     /**
-     * Applies changes made in hologram data for each player seeing hologram
+     * Applies changes made in hologram data for each player seeing hologram.
      */
     public void applyChanges() {
         HologramApplyChangesEvent customEvent = new HologramApplyChangesEvent(this);
@@ -122,8 +125,8 @@ public class Hologram {
     }
 
     /**
-     * Shows hologram for a specific player if custom event of showing hologram is not canceled
-     * If player has seen a hologram before, nothing will be done
+     * Shows hologram for a specific player if custom event of showing hologram is not canceled.
+     * If a player has seen a hologram before, nothing will be done.
      */
     public Hologram showHologram(Player player) {
         if(playersSeeingHologram.contains(player)) return this;
@@ -144,8 +147,8 @@ public class Hologram {
     }
 
     /**
-     * Shows hologram for specific player
-     * @param force - if true, ignores if event is canceled and forcing to send a packet to show hologram for player if he is on the same world as hologram
+     * Shows hologram for specific player.
+     * @param force - if true, ignores if event is canceled and forcing to send a packet to show hologram for player if he is on the same world as hologram.
      */
     public Hologram showHologram(Player player, boolean force) {
         if(!force && playersSeeingHologram.contains(player)) return this;
@@ -166,7 +169,7 @@ public class Hologram {
     }
 
     /**
-     * Shows hologram for specific players
+     * Shows hologram for specific players.
      * @see #showHologram(Player)
      */
     public Hologram showHologram(Player... players) {
@@ -177,7 +180,7 @@ public class Hologram {
     }
 
     /**
-     * Shows hologram for specific players
+     * Shows hologram for specific players.
      * @see #showHologram(Player, boolean)
      */
     public Hologram showHologram(boolean force, Player... players) {
@@ -188,7 +191,7 @@ public class Hologram {
     }
 
     /**
-     * Shows hologram for specific players
+     * Shows hologram for specific players.
      * @see #showHologram(Player)
      */
     public Hologram showHologram(List<Player> players) {
@@ -199,7 +202,7 @@ public class Hologram {
     }
 
     /**
-     * Shows hologram for specific players
+     * Shows hologram for specific players.
      * @see #showHologram(Player, boolean)
      */
     public Hologram showHologram(List<Player> players, boolean force) {
@@ -210,7 +213,7 @@ public class Hologram {
     }
 
     /**
-     * Shows hologram for specific players
+     * Shows hologram for specific players.
      * @see #showHologram(Player)
      */
     public Hologram showHologram(Collection<? extends Player> players) {
@@ -221,7 +224,7 @@ public class Hologram {
     }
 
     /**
-     * Shows hologram for specific players
+     * Shows hologram for specific players.
      * @see #showHologram(Player)
      */
     public Hologram showHologram(Collection<? extends Player> players, boolean force) {
@@ -232,8 +235,8 @@ public class Hologram {
     }
 
     /**
-     * Hides hologram for specific player if custom event of hiding hologram is not canceled
-     * If player has not seen a hologram before, nothing will be done
+     * Hides hologram for specific player if custom event of hiding hologram is not canceled.
+     * If player has not seen a hologram before, nothing will be done.
      */
     public Hologram hideHologram(Player player) {
         if(!playersSeeingHologram.contains(player)) return this;
@@ -253,8 +256,8 @@ public class Hologram {
     }
 
     /**
-     * Hides hologram for specific player
-     * @param force - if true, ignores if event is canceled and forcing to send a packet to hide hologram for player if he is on the same world as hologram
+     * Hides hologram for specific player.
+     * @param force - if true, ignores if event is canceled and forcing to send a packet to hide hologram for player if he is on the same world as hologram.
      */
     public Hologram hideHologram(Player player, boolean force) {
         if(!force && !playersSeeingHologram.contains(player)) return this;
@@ -274,7 +277,7 @@ public class Hologram {
     }
 
     /**
-     * Hides hologram for specific players
+     * Hides hologram for specific players.
      * @see #hideHologram(Player)
      */
     public Hologram hideHologram(Player... players) {
@@ -285,7 +288,7 @@ public class Hologram {
     }
 
     /**
-     * Hides hologram for specific players
+     * Hides hologram for specific players.
      * @see #hideHologram(Player, boolean)
      */
     public Hologram hideHologram(boolean force, Player... players) {
@@ -296,7 +299,7 @@ public class Hologram {
     }
 
     /**
-     * Hides hologram for specific players
+     * Hides hologram for specific players.
      * @see #hideHologram(Player)
      */
     public Hologram hideHologram(List<Player> players) {
@@ -307,7 +310,7 @@ public class Hologram {
     }
 
     /**
-     * Hides hologram for specific players
+     * Hides hologram for specific players.
      * @see #hideHologram(Player, boolean)
      */
     public Hologram hideHologram(List<Player> players, boolean force) {
@@ -318,7 +321,7 @@ public class Hologram {
     }
 
     /**
-     * Hides hologram for specific players
+     * Hides hologram for specific players.
      * @see #hideHologram(Player)
      */
     public Hologram hideHologram(Collection<? extends Player> players) {
@@ -329,7 +332,7 @@ public class Hologram {
     }
 
     /**
-     * Hides hologram for specific players
+     * Hides hologram for specific players.
      * @see #hideHologram(Player, boolean)
      */
     public Hologram hideHologram(Collection<? extends Player> players, boolean force) {
@@ -340,15 +343,15 @@ public class Hologram {
     }
 
     /**
-     * @returns true if player can see hologram. Else returns false
+     * @returns true if player can see hologram. Else returns false.
      */
     public boolean canSee(Player player) {
         return playersSeeingHologram.contains(player);
     }
 
     /**
-     * Immediately updates all placeholders provided isPlaceholdersEnabled() is enabled
-     * If it's not TEXT_DISPLAY or placeholders are disabled for this hologram, this method will do nothing
+     * Immediately updates all placeholders provided isPlaceholdersEnabled() is enabled.
+     * If it's not TEXT_DISPLAY or placeholders are disabled for this hologram, this method will do nothing.
      */
     public Hologram updateHologramPlaceholders() {
         if(!placeholdersEnabled || !type.equals(HologramType.TEXT_DISPLAY)) return this;
@@ -362,7 +365,7 @@ public class Hologram {
     }
 
     /**
-     * Sets hologram new location
+     * Sets hologram new location.
      */
     public Hologram setLocation(Location location) {
         HologramChangeLocationEvent customEvent = new HologramChangeLocationEvent(this);
@@ -385,16 +388,18 @@ public class Hologram {
     }
 
     /**
-     * Sets whether the hologram should be visible automatically to every player on the server
-     * After set public visible to true, automatically for all players on the server will be used showPlayer() method
-     * As well for players joining the server
-     * @WARNING! This method won't hide players after set it to false!
+     * Sets whether the hologram should be visible automatically to every player on the server.
+     * After set public visible to true, automatically for all players on the server will be used showPlayer() method.
+     * Players joining on the server will see hologram automatically as well.
+     * @WARNING This method won't hide players automatically after set it to false! If you need to hide hologram from players, you should loop through playersSeeingHologram and call hideHologram().
      */
     public Hologram setPublicVisible(boolean publicVisible) {
         this.publicVisible = publicVisible;
 
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            showHologram(player);
+        if(publicVisible) {
+            for(Player player : Bukkit.getOnlinePlayers()) {
+                showHologram(player);
+            }
         }
         return this;
     }

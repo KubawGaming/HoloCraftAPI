@@ -11,7 +11,7 @@ public class HologramCreateEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
     private boolean isCancelled;
-    /** Created hologram */
+    /** Created hologram. */
     @Getter private final Hologram hologram;
 
     public HologramCreateEvent(Hologram hologram) {

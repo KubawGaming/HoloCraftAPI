@@ -7,7 +7,7 @@ import org.bukkit.Location;
 public class EntityTeleportPacket extends PacketContainer {
 
     /**
-     * Packet which teleports an entity to new coordinates
+     * Packet which teleports an entity to new coordinates.
      */
     public EntityTeleportPacket(int entityId, Location newLocation) {
         super(PacketType.Play.Server.ENTITY_TELEPORT);

@@ -10,7 +10,7 @@ import java.util.UUID;
 public class EntitySpawnPacket extends PacketContainer {
 
     /**
-     * Packet which spawns an entity
+     * Packet which spawns an entity.
      */
     public EntitySpawnPacket(int entityId, EntityType entityType, Location location, byte pitch, byte yaw) {
         super(PacketType.Play.Server.SPAWN_ENTITY);

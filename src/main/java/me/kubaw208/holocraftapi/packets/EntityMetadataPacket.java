@@ -26,9 +26,9 @@ import java.util.List;
 public class EntityMetadataPacket extends PacketContainer {
 
     /**
-     * Sets metadata for given hologram
-     * @param receiver - player who will get this packet
-     * @param hologram - from that hologram will be got his data and send to receiver
+     * Sets metadata for given hologram.
+     * @param receiver - player who will get this packet.
+     * @param hologram - from that hologram will be got his data and send to receiver.
      */
     public EntityMetadataPacket(Player receiver, Hologram hologram) {
         super(PacketType.Play.Server.ENTITY_METADATA);
@@ -68,18 +68,16 @@ public class EntityMetadataPacket extends PacketContainer {
     }
 
     /**
-     * Constructor created for TEXT_DISPLAY to update the package with only hologram text for players
+     * Constructor created for TEXT_DISPLAY to update the package with only hologram text for players.
      * Don't use it for BlockDisplay or ItemDisplay!
      */
     public EntityMetadataPacket(int entityID, Player receiver, String text, boolean placeholdersEnabled) {
         super(PacketType.Play.Server.ENTITY_METADATA);
 
-        List<WrappedDataValue> values = new ArrayList<>();
-
         getModifier().writeDefaults();
         getIntegers().write(0, entityID);
 
-        values.addAll(List.of(
+        List<WrappedDataValue> values = new ArrayList<>(List.of(
                 new WrappedDataValue(
                         23, //text
                         WrappedDataWatcher.Registry.getChatComponentSerializer(),
@@ -92,78 +90,78 @@ public class EntityMetadataPacket extends PacketContainer {
     }
 
     /**
-     * Display data values: https://wiki.vg/Entity_metadata#Display
+     * Display data values you can find <a href="https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Entity_metadata#Display">here</a>
      * @returns List of WrappedDataValue
      */
     public List<WrappedDataValue> getDisplayDataWrappersList(Data data) {
         return List.of(
                 new WrappedDataValue(
-                        8, //Interpolation delay
+                        8, // Interpolation delay
                         WrappedDataWatcher.Registry.get(Integer.class),
                         data.getInterpolationDelay()
                 ),
                 new WrappedDataValue(
-                        9, //Transformation interpolation duration
+                        9, // Transformation interpolation duration
                         WrappedDataWatcher.Registry.get(Integer.class),
                         data.getTransformationInterpolationDuration()
                 ),
                 new WrappedDataValue(
-                        10, //Position/Rotation interpolation duration
+                        10, // Position/Rotation interpolation duration
                         WrappedDataWatcher.Registry.get(Integer.class),
                         data.getPositionOrRotationInterpolationDuration()
                 ),
                 new WrappedDataValue(
-                        11, //Translation (offset)
+                        11, // Translation (offset)
                         WrappedDataWatcher.Registry.get(Vector3f.class),
                         data.getTranslation()
                 ),
                 new WrappedDataValue(
-                        12, //Scale
+                        12, // Scale
                         WrappedDataWatcher.Registry.get(Vector3f.class),
                         data.getScale()
                 ),
                 new WrappedDataValue(
-                        13, //Rotation left
+                        13, // Rotation left
                         WrappedDataWatcher.Registry.get(Quaternionf.class),
                         data.getRotation()
                 ),
                 new WrappedDataValue(
-                        15, //Billboard constraints
+                        15, // Billboard constraints
                         WrappedDataWatcher.Registry.get(Byte.class),
                         (byte) data.getBillboard().getId()
                 ),
                 new WrappedDataValue(
-                        16, //Brightness override
+                        16, // Brightness override
                         WrappedDataWatcher.Registry.get(Integer.class),
                         data.getBrightnessOverride()
                 ),
                 new WrappedDataValue(
-                        17, //View range
+                        17, // View range
                         WrappedDataWatcher.Registry.get(Float.class),
                         data.getViewRange()
                 ),
                 new WrappedDataValue(
-                        18, //Shadow radius
+                        18, // Shadow radius
                         WrappedDataWatcher.Registry.get(Float.class),
                         data.getShadowRadius()
                 ),
                 new WrappedDataValue(
-                        19, //Shadow strength
+                        19, // Shadow strength
                         WrappedDataWatcher.Registry.get(Float.class),
                         data.getShadowStrength()
                 ),
                 new WrappedDataValue(
-                        20, //Width
+                        20, // Width
                         WrappedDataWatcher.Registry.get(Float.class),
                         data.getWidth()
                 ),
                 new WrappedDataValue(
-                        21, //Height
+                        21, // Height
                         WrappedDataWatcher.Registry.get(Float.class),
                         data.getHeight()
                 ),
                 new WrappedDataValue(
-                        22, //Glow color override
+                        22, // Glow color override
                         WrappedDataWatcher.Registry.get(Integer.class),
                         data.getGlowColorOverride()
                 )

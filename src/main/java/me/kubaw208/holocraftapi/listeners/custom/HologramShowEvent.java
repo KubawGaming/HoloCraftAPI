@@ -13,7 +13,7 @@ public class HologramShowEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     @Getter private final Player player;
     private boolean isCancelled;
-    /** Hologram to be shown for the player */
+    /** Hologram to be shown for the player. */
     @Getter private final Hologram hologram;
     /** If true, ignores if event is canceled or not and always will show hologram for player. */
     @Getter private boolean force;
