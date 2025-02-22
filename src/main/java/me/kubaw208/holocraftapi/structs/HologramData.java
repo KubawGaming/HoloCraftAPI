@@ -113,33 +113,39 @@ public class HologramData {
                     data.get("data.glowColorOverride") != null ? (int) data.get("data.glowColorOverride") : 1
             );
 
-            if(hologramType.equals(HologramType.TEXT_DISPLAY)) {
+            if(hologramType.equals(HologramType.TEXT_DISPLAY) && data.get("textData") != null) {
+                HashMap<String, Object> textData = (HashMap<String, Object>) data.get("textData");
+
                 getData().asTextDisplayData().setText(
-                        data.get("textData.text") != null ? (String) data.get("textData.text") : ""
+                        textData.get("text") != null ? (String) textData.get("text") : ""
                 );
 
                 getData().asTextDisplayData().setLineWidth(
-                        data.get("textData.lineWidth") != null ? (int) data.get("textData.lineWidth") : 1
+                        textData.get("lineWidth") != null ? (int) textData.get("lineWidth") : 1
                 );
 
                 getData().asTextDisplayData().setBackgroundColor(
-                        data.get("textData.backgroundColor") != null ? (int) data.get("textData.backgroundColor") : 1073741824
+                        textData.get("backgroundColor") != null ? (int) textData.get("backgroundColor") : 1073741824
                 );
 
                 getData().asTextDisplayData().setTextOpacity(
-                        data.get("textData.textOpacity") != null ? (byte) data.get("textData.textOpacity") : (byte) -1
+                        textData.get("textOpacity") != null ? (byte) textData.get("textOpacity") : (byte) -1
                 );
 
                 getData().asTextDisplayData().setMask(
-                        data.get("textData.mask") != null ? (byte) data.get("textData.mask") : (byte) 0
+                        textData.get("mask") != null ? (byte) textData.get("mask") : (byte) 0
                 );
-            } else if(hologramType.equals(HologramType.ITEM_DISPLAY)) {
+            } else if(hologramType.equals(HologramType.ITEM_DISPLAY) && data.get("itemData") != null) {
+                HashMap<String, Object> itemData = (HashMap<String, Object>) data.get("itemData");
+
                 getData().asItemDisplayData().setItem(
-                        data.get("itemData.item") != null ? Material.valueOf(data.get("itemData.item").toString().toUpperCase()) : Material.DIRT
+                        itemData.get("item") != null ? Material.valueOf(itemData.get("item").toString().toUpperCase()) : Material.DIRT
                 );
-            } else if(hologramType.equals(HologramType.BLOCK_DISPLAY)) {
+            } else if(hologramType.equals(HologramType.BLOCK_DISPLAY) && data.get("blockData") != null) {
+                HashMap<String, Object> blockData = (HashMap<String, Object>) data.get("blockData");
+
                 getData().asBlockDisplayData().setBlock(
-                        data.get("blockData.block") != null ? Material.valueOf(data.get("blockData.block").toString().toUpperCase()) : Material.DIRT
+                        blockData.get("block") != null ? Material.valueOf(blockData.get("block").toString().toUpperCase()) : Material.DIRT
                 );
             }
         }
