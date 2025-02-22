@@ -129,11 +129,11 @@ public class HologramData {
                 );
 
                 getData().asTextDisplayData().setTextOpacity(
-                        textData.get("textOpacity") != null ? (byte) textData.get("textOpacity") : (byte) -1
+                        textData.get("textOpacity") != null ? (byte) Integer.parseInt(textData.get("textOpacity").toString()) : (byte) -1
                 );
 
                 getData().asTextDisplayData().setMask(
-                        textData.get("mask") != null ? (byte) textData.get("mask") : (byte) 0
+                        textData.get("mask") != null ? (byte) Integer.parseInt(textData.get("mask").toString()) : (byte) 0
                 );
             } else if(hologramType.equals(HologramType.ITEM_DISPLAY) && data.get("itemData") != null) {
                 HashMap<String, Object> itemData = (HashMap<String, Object>) data.get("itemData");
