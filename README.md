@@ -97,7 +97,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.KubawGaming:HoloCraftAPI:VERSION_HERE'
+    implementation 'com.github.KubawGaming:HoloCraftAPI:v{VERSION_HERE}'
 }
 ```
 
@@ -112,6 +112,6 @@ dependencies {
 <dependency>
     <groupId>com.github.KubawGaming</groupId>
     <artifactId>HoloCraftAPI</artifactId>
-    <version>VERSION_HERE</version>
+    <version>v{VERSION_HERE}</version>
 </dependency>
 ```
