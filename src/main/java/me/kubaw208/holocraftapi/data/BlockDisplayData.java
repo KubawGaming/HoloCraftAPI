@@ -1,26 +1,31 @@
 package me.kubaw208.holocraftapi.data;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.Accessors;
 import me.kubaw208.holocraftapi.structs.Hologram;
 import org.bukkit.Material;
+import org.bukkit.entity.BlockDisplay;
 
-@Setter @Getter @Accessors(chain=true)
+@Getter @Accessors(chain=true)
 public class BlockDisplayData extends Data {
 
-    /** Sets new block for hologram to be displayed. */
-    private Material block;
-
-    public BlockDisplayData() {
-        super();
-        this.setScale(0.25f, 0.25f, 0.25f);
+    public BlockDisplayData(Hologram hologram) {
+        super(hologram);
+        this.hologram = hologram;
+        setBlock(getBlockDisplay().getBlock().getMaterial());
     }
 
-    public BlockDisplayData(Hologram hologram) {
-        super();
-        this.hologram = hologram;
-        this.setScale(0.25f, 0.25f, 0.25f);
+    private BlockDisplay getBlockDisplay() {
+        return (BlockDisplay) hologram.getEntity();
+    }
+
+    public BlockDisplayData setBlock(Material block) {
+        getBlockDisplay().setBlock(block.createBlockData());
+        return this;
+    }
+
+    public Material getBlock() {
+        return getBlockDisplay().getBlock().getMaterial();
     }
 
 }

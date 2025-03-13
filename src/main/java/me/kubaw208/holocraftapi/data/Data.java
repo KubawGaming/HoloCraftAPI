@@ -1,58 +1,21 @@
 package me.kubaw208.holocraftapi.data;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
-import me.kubaw208.holocraftapi.enums.HologramBillboard;
 import me.kubaw208.holocraftapi.structs.Hologram;
+import org.bukkit.Color;
+import org.bukkit.entity.Display;
+import org.bukkit.util.Transformation;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-
-import javax.annotation.Nullable;
 
 /**
  * Represents "Display" metadata in <a href="https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Entity_metadata#Display">ProtocolLib wiki</a>
  */
-@Getter @Accessors(chain=true)
-public class Data implements Cloneable {
+public class Data {
 
-    @Nullable @Getter protected Hologram hologram;
-    @Setter private int interpolationDelay;
-    @Setter private int transformationInterpolationDuration;
-    @Setter private int positionOrRotationInterpolationDuration;
-    @Setter private Vector3f translation;
-    private final Vector3f scale;
-    private final Quaternionf rotation;
-    private double xRotation;
-    private double yRotation;
-    private double zRotation;
-    @Setter private HologramBillboard billboard;
-    @Setter private int brightnessOverride;
-    @Setter private float viewRange;
-    @Setter private float shadowRadius;
-    @Setter private float shadowStrength;
-    @Setter private float width;
-    @Setter private float height;
-    @Setter private int glowColorOverride;
+    protected Hologram hologram;
 
-    public Data() {
-        this.interpolationDelay = 0;
-        this.transformationInterpolationDuration = 0;
-        this.positionOrRotationInterpolationDuration = 0;
-        this.translation = new Vector3f(0f, 0f, 0f);
-        this.scale = new Vector3f(1f, 1f, 1f);
-        this.rotation = new Quaternionf(0f, 1f, 0f, 1f);
-        this.xRotation = 0;
-        this.yRotation = 0;
-        this.zRotation = 0;
-        this.billboard = HologramBillboard.FIXED;
-        this.brightnessOverride = -1;
-        this.viewRange = 1.0f;
-        this.shadowRadius = 0.0f;
-        this.shadowStrength = 1.0f;
-        this.width = 0.0f;
-        this.height = 0.0f;
-        this.glowColorOverride = -1;
+    public Data(Hologram hologram) {
+        this.hologram = hologram;
     }
 
     /**
@@ -82,25 +45,8 @@ public class Data implements Cloneable {
         return itemDisplayData;
     }
 
-    public Data setScale(float x, float y, float z) {
-        this.scale.set(x, y, z);
-        return this;
-    }
-
-    /**
-     * Sets hologram rotation using degrees.
-     */
-    public Data setRotation(double xRotation, double yRotation, double zRotation) {
-        this.xRotation = normalizeAngle(xRotation);
-        this.yRotation = normalizeAngle(yRotation);
-        this.zRotation = normalizeAngle(zRotation);
-
-        this.rotation.set(new Quaternionf().rotateYXZ(
-                (float) Math.toRadians(this.xRotation),
-                (float) Math.toRadians(this.yRotation),
-                (float) Math.toRadians(this.zRotation)).scale(2));
-
-        return this;
+    private Display getDisplay() {
+        return (Display) hologram.getEntity();
     }
 
     /**
@@ -115,21 +61,123 @@ public class Data implements Cloneable {
         return angle;
     }
 
-    /**
-     * Cloning Data will make 'hologram' field null.
-     * @returns a clone of Data object.
-     */
-    @Override
-    public Data clone() {
-        try {
-            Data data = (Data) super.clone();
+    public Data setScale(float x, float y, float z) {
+        getDisplay().getTransformation().getScale().set(x, y, z);
+        return this;
+    }
 
-            data.hologram = null;
+    public Vector3f getScale() {
+        return getDisplay().getTransformation().getScale();
+    }
 
-            return data;
-        } catch(CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+    public Data setRotation(float x, float y, float z) {
+        Transformation transformation = getDisplay().getTransformation();
+        Quaternionf rotation = new Quaternionf().rotateXYZ(
+                (float) Math.toRadians(normalizeAngle(x)),
+                (float) Math.toRadians(normalizeAngle(y)),
+                (float) Math.toRadians(normalizeAngle(z))
+        );
+        transformation.getRightRotation().set(rotation);
+        getDisplay().setTransformation(transformation);
+        return this;
+    }
+
+    public float getRotationYaw() {
+        return getDisplay().getYaw();
+    }
+
+    public float getRotationPitch() {
+        return getDisplay().getPitch();
+    }
+
+    public Data setBillboard(Display.Billboard billboard) {
+        getDisplay().setBillboard(billboard);
+        return this;
+    }
+
+    public Display.Billboard getBillboard() {
+        return getDisplay().getBillboard();
+    }
+
+    public Data setBrightness(int blockLight, int skyLight) {
+        getDisplay().setBrightness(new Display.Brightness(blockLight, skyLight));
+        return this;
+    }
+
+    public Display.Brightness getBrightness() {
+        return getDisplay().getBrightness();
+    }
+
+    public Data setViewRange(float viewRange) {
+        getDisplay().setViewRange(viewRange);
+        return this;
+    }
+
+    public float getViewRange() {
+        return getDisplay().getViewRange();
+    }
+
+    public Data setShadowRadius(float shadowRadius) {
+        getDisplay().setShadowRadius(shadowRadius);
+        return this;
+    }
+
+    public float getShadowRadius() {
+        return getDisplay().getShadowRadius();
+    }
+
+    public Data setShadowStrength(float shadowStrength) {
+        getDisplay().setShadowStrength(shadowStrength);
+        return this;
+    }
+
+    public float getShadowStrength() {
+        return getDisplay().getShadowStrength();
+    }
+
+    public Data setWidth(float width) {
+        getDisplay().setDisplayWidth(width);
+        return this;
+    }
+
+    public float getWidth() {
+        return getDisplay().getDisplayWidth();
+    }
+
+    public Data setHeight(float height) {
+        getDisplay().setDisplayHeight(height);
+        return this;
+    }
+
+    public float getHeight() {
+        return getDisplay().getDisplayHeight();
+    }
+
+    public Data setGlowColorOverride(Color color) {
+        getDisplay().setGlowColorOverride(color);
+        return this;
+    }
+
+    public Color getGlowColorOverride() {
+        return getDisplay().getGlowColorOverride();
+    }
+
+    public Data setInterpolationDuration(int duration) {
+        getDisplay().setInterpolationDuration(duration);
+        return this;
+    }
+
+    public int getInterpolationDuration() {
+        return getDisplay().getInterpolationDuration();
+    }
+
+    public Data setInterpolationDelay(int delay) {
+        getDisplay().setInterpolationDelay(delay);
+        return this;
+    }
+
+    public int getInterpolationDelay() {
+        return getDisplay().getInterpolationDelay();
     }
 
 }

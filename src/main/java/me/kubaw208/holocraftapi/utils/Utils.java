@@ -8,14 +8,14 @@ import java.util.Random;
 
 public class Utils {
 
+    private static final MiniMessage miniMessage = MiniMessage.miniMessage();
+
     /**
      * Colors the component message with hex colors
      * @return Component with hex colors message
      */
     public static Component hexComponent(String message) {
-        var mm = MiniMessage.miniMessage();
-        Component parsed = mm.deserialize(message);
-        return parsed;
+        return miniMessage.deserialize(message);
     }
 
     /**
@@ -36,6 +36,15 @@ public class Utils {
     public static Object cancelTask(Object object) {
         if(object != null) Bukkit.getScheduler().cancelTask((int) object);
         return null;
+    }
+
+    /**
+     * Extracts String from Component with colors
+     * @param component Component sent to be changed
+     * @return String from component
+     */
+    public static String asText(Component component) {
+        return miniMessage.serialize(component);
     }
 
 }

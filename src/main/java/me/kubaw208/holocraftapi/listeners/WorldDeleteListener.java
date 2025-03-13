@@ -14,7 +14,7 @@ public class WorldDeleteListener implements Listener {
 
     @EventHandler
     public void onWorldUnload(WorldUnloadEvent e) {
-        for(Hologram hologram : new ArrayList<>(hologramManager.getHolograms())) {
+        for(Hologram hologram : new ArrayList<>(hologramManager.getHolograms().values())) {
             if(!hologram.getLocation().getWorld().equals(e.getWorld())) continue;
 
             hologramManager.deleteHologram(hologram);

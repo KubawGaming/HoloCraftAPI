@@ -2,51 +2,141 @@ package me.kubaw208.holocraftapi.structs;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.kubaw208.holocraftapi.data.BlockDisplayData;
-import me.kubaw208.holocraftapi.data.Data;
-import me.kubaw208.holocraftapi.data.ItemDisplayData;
-import me.kubaw208.holocraftapi.data.TextDisplayData;
-import me.kubaw208.holocraftapi.enums.HologramBillboard;
+import lombok.experimental.Accessors;
 import me.kubaw208.holocraftapi.enums.HologramType;
+import me.kubaw208.holocraftapi.utils.Utils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Display;
+import org.bukkit.entity.TextDisplay;
+import org.bukkit.inventory.ItemStack;
+import org.joml.Vector3f;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
- * A custom class for storing hologram data. Allows you to apply data to the selected hologram.
+ * Special HologramData class intended to use in files to save hologram data.
  */
-@Getter @Setter
+@Getter @Setter @Accessors(chain = true)
 public class HologramData {
 
-    private HologramType hologramType;
-    private Data data;
+    // Display data
+    private final HologramType hologramType;
     private Location location;
-    private boolean hideOnUnload = true;
-    private boolean placeholdersEnabled = false;
-    private boolean publicVisible = false;
+    private boolean placeholdersEnabled;
+    private boolean publicVisible;
     private HashMap<String, Object> customData = new HashMap<>();
+    private Vector3f scale;
+    private float rotationYaw;
+    private float rotationPitch;
+    private Display.Billboard billboard;
+    private Display.Brightness brightness;
+    private float viewRange;
+    private float shadowRadius;
+    private float shadowStrength;
+    private float width;
+    private float height;
+    private Color glowColorOverride;
+    private int interpolationDuration;
+    private int interpolationDelay;
+
+    // TextDisplay data
+    private Component text;
+    private int lineWidth;
+    private byte textOpacity;
+    private boolean isShadowed;
+    private boolean isSeeThrough;
+    private boolean defaultBackground;
+    private Color defaultBackgroundColor;
+    private TextDisplay.TextAlignment alignment;
+
+    // ItemDisplay data
+    private ItemStack item;
+
+    // BlockDisplay data
+    private Material block;
 
     public HologramData(HologramType hologramType, Location location) {
         this.hologramType = hologramType;
         this.location = location;
+        this.scale = new Vector3f(1, 1, 1);
+        this.rotationYaw = 0;
+        this.rotationPitch = 0;
+        this.billboard = Display.Billboard.FIXED;
+        this.brightness = null;
+        this.viewRange = 1.0f;
+        this.shadowRadius = 0.0f;
+        this.shadowStrength = 1.0f;
+        this.width = 0;
+        this.height = 0;
+        this.glowColorOverride = Color.WHITE;
+        this.interpolationDuration = 0;
+        this.interpolationDelay = 0;
 
-        switch(hologramType) {
-            case TEXT_DISPLAY -> this.data = new TextDisplayData();
-            case BLOCK_DISPLAY -> this.data = new BlockDisplayData();
-            case ITEM_DISPLAY -> this.data = new ItemDisplayData();
+        if(hologramType.equals(HologramType.TEXT_DISPLAY)) {
+            this.text = Utils.hexComponent("Default message");
+            this.lineWidth = 0;
+            this.textOpacity = 0;
+            this.isShadowed = false;
+            this.isSeeThrough = false;
+            this.defaultBackground = false;
+            this.defaultBackgroundColor = Color.WHITE;
+            this.alignment = TextDisplay.TextAlignment.CENTER;
+        } else if(hologramType.equals(HologramType.ITEM_DISPLAY)) {
+            this.item = new ItemStack(Material.DIRT);
+        } else if(hologramType.equals(HologramType.BLOCK_DISPLAY)) {
+            this.block = Material.DIRT;
+        }
+    }
+
+    public HologramData(Hologram hologram) {
+        this.hologramType = hologram.getType();
+        this.location = hologram.getLocation().clone();
+
+        try {
+            this.scale = (Vector3f) hologram.getData().getScale().clone();
+        } catch(CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        this.rotationYaw = hologram.getData().getRotationYaw();
+        this.rotationPitch = hologram.getData().getRotationPitch();
+        this.billboard = hologram.getData().getBillboard();
+        this.brightness = hologram.getData().getBrightness();
+        this.viewRange = hologram.getData().getViewRange();
+        this.shadowRadius = hologram.getData().getShadowRadius();
+        this.shadowStrength = hologram.getData().getShadowStrength();
+        this.width = hologram.getData().getWidth();
+        this.height = hologram.getData().getHeight();
+        this.glowColorOverride = hologram.getData().getGlowColorOverride();
+        this.interpolationDuration = hologram.getData().getInterpolationDuration();
+        this.interpolationDelay = hologram.getData().getInterpolationDelay();
+
+        if(hologram.getType().equals(HologramType.TEXT_DISPLAY)) {
+            this.text = hologram.getData().asTextDisplayData().getText();
+            this.lineWidth = hologram.getData().asTextDisplayData().getLineWidth();
+            this.textOpacity = hologram.getData().asTextDisplayData().getTextOpacity();
+            this.isShadowed = hologram.getData().asTextDisplayData().isShadowed();
+            this.isSeeThrough = hologram.getData().asTextDisplayData().isSeeThrough();
+            this.defaultBackground = hologram.getData().asTextDisplayData().isDefaultBackground();
+            this.defaultBackgroundColor = hologram.getData().asTextDisplayData().getDefaultBackgroundColor();
+            this.alignment = hologram.getData().asTextDisplayData().getAlignment();
+        } else if(hologram.getType().equals(HologramType.ITEM_DISPLAY)) {
+            this.item = hologram.getData().asItemDisplayData().getItem().clone();
+        } else if(hologram.getType().equals(HologramType.BLOCK_DISPLAY)) {
+            this.block = hologram.getData().asBlockDisplayData().getBlock();
         }
     }
 
     public HologramData(HashMap<String, Object> copiedData) {
-        hologramType = HologramType.valueOf(copiedData.get("hologramType").toString().toUpperCase());
+        this.hologramType = HologramType.valueOf(copiedData.get("type").toString().toUpperCase());
 
-        switch(hologramType) {
-            case TEXT_DISPLAY -> this.data = new TextDisplayData();
-            case BLOCK_DISPLAY -> this.data = new BlockDisplayData();
-            case ITEM_DISPLAY -> this.data = new ItemDisplayData();
-        }
+        if(hologramType == null)
+            throw new NullPointerException("Hologram type cannot be null! Use HologramType enum to choose correct hologram type.");
 
         if(copiedData.get("location") != null) {
             HashMap<String, Object> locationData = (HashMap<String, Object>) copiedData.get("location");
@@ -59,145 +149,183 @@ public class HologramData {
             );
         }
 
-        if(copiedData.get("hideOnUnload") != null)
-            setHideOnUnload((boolean) copiedData.get("hideOnUnload"));
+        if(copiedData.get("publicVisible") != null)
+            setPublicVisible((boolean) copiedData.get("publicVisible"));
 
         if(copiedData.get("placeholdersEnabled") != null)
             setPlaceholdersEnabled((boolean) copiedData.get("placeholdersEnabled"));
-
-        if(copiedData.get("publicVisible") != null)
-            setPublicVisible((boolean) copiedData.get("publicVisible"));
 
         if(copiedData.get("customData") != null)
             setCustomData((HashMap<String, Object>) copiedData.get("customData"));
 
         if(copiedData.get("data") != null) {
             HashMap<String, Object> data = (HashMap<String, Object>) copiedData.get("data");
-            HologramBillboard billboard = HologramBillboard.valueOf(data.get("billboard").toString().toUpperCase());
 
-            getData().setBillboard(billboard);
+            setBillboard(Display.Billboard.valueOf(data.get("billboard").toString().toUpperCase()));
 
-            getData().setViewRange(
-                    data.get("data.viewRange") != null ? (int) data.get("data.viewRange") : 1.0f
+            setViewRange(data.get("viewRange") != null ? Float.parseFloat(data.get("viewRange").toString()) : 1.0f);
+
+            setWidth(data.get("width") != null ? Float.parseFloat(data.get("width").toString()) : 0f);
+
+            setHeight(data.get("height") != null ? Float.parseFloat(data.get("height").toString()) : 0f);
+
+            setRotationYaw(data.get("rotationYaw") != null ? Float.parseFloat(data.get("rotationYaw").toString()) : 0.0f);
+
+            setRotationPitch(data.get("rotationPitch") != null ? Float.parseFloat(data.get("rotationPitch").toString()) : 0.0f);
+
+            HashMap<String, Object> scale = data.get("scale") != null ? (HashMap<String, Object>) data.get("scale") : new HashMap<>();
+
+            setScale(new Vector3f(
+                    scale.get("x") != null ? Float.parseFloat(scale.get("x").toString()) : 1.0f,
+                    scale.get("y") != null ? Float.parseFloat(scale.get("y").toString()) : 1.0f,
+                    scale.get("z") != null ? Float.parseFloat(scale.get("z").toString()) : 1.0f
+            ));
+
+            setShadowRadius(
+                    data.get("shadowRadius") != null ? Float.parseFloat(data.get("shadowRadius").toString()) : 0
             );
 
-            getData().setWidth(
-                    data.get("data.width") != null ? (int) data.get("data.width") : 0
+            setShadowStrength(
+                    data.get("shadowStrength") != null ? Float.parseFloat(data.get("shadowStrength").toString()) : 1.0f
             );
 
-            getData().setHeight(
-                    data.get("data.height") != null ? (int) data.get("data.height") : 0
+            setGlowColorOverride(
+                    Color.fromRGB(data.get("glowColorOverride") != null ? (int) data.get("glowColorOverride") : 0)
             );
 
-            getData().setRotation(
-                    data.get("data.rotation.x") != null ? (double) data.get("data.rotation.x") : 0.0,
-                    data.get("data.rotation.y") != null ? (double) data.get("data.rotation.y") : 0.0,
-                    data.get("data.rotation.z") != null ? (double) data.get("data.rotation.z") : 0.0
-            );
+            if(hologramType.equals(HologramType.TEXT_DISPLAY)) {
+                HashMap<String, Object> textData = data.get("textData") != null ? (HashMap<String, Object>) data.get("textData") : new HashMap<>();
 
-            getData().setScale(
-                    data.get("data.scale.x") != null ? (float) data.get("data.scale.x") : 1.0f,
-                    data.get("data.scale.y") != null ? (float) data.get("data.scale.y") : 1.0f,
-                    data.get("data.scale.z") != null ? (float) data.get("data.scale.z") : 1.0f
-            );
+                setText(Utils.hexComponent(textData.get("text") != null ? textData.get("text").toString() : "Default message"));
 
-            getData().setShadowRadius(
-                    data.get("data.shadowRadius") != null ? (float) data.get("data.shadowRadius") : 0
-            );
+                setLineWidth(textData.get("lineWidth") != null ? Integer.parseInt(textData.get("lineWidth").toString()) : 1);
 
-            getData().setShadowStrength(
-                    data.get("data.shadowStrength") != null ? (float) data.get("data.shadowStrength") : 1.0f
-            );
+                setTextOpacity(textData.get("textOpacity") != null ? (byte) Integer.parseInt(textData.get("textOpacity").toString()) : (byte) -1);
 
-            getData().setGlowColorOverride(
-                    data.get("data.glowColorOverride") != null ? (int) data.get("data.glowColorOverride") : 1
-            );
+                setShadowed(textData.get("shadowed") != null ? (boolean) textData.get("shadowed") : false);
 
-            if(hologramType.equals(HologramType.TEXT_DISPLAY) && data.get("textData") != null) {
-                HashMap<String, Object> textData = (HashMap<String, Object>) data.get("textData");
+                setSeeThrough(textData.get("seeThrough") != null ? (boolean) textData.get("seeThrough") : false);
 
-                getData().asTextDisplayData().setText(
-                        textData.get("text") != null ? (String) textData.get("text") : ""
-                );
+                setDefaultBackground(textData.get("defaultBackground") != null ? (boolean) textData.get("defaultBackground") : true);
 
-                getData().asTextDisplayData().setLineWidth(
-                        textData.get("lineWidth") != null ? (int) textData.get("lineWidth") : 1
-                );
+                setDefaultBackgroundColor(textData.get("backgroundColor") != null ? Color.fromRGB((int) textData.get("backgroundColor")) : Color.WHITE);
 
-                getData().asTextDisplayData().setBackgroundColor(
-                        textData.get("backgroundColor") != null ? (int) textData.get("backgroundColor") : 1073741824
-                );
+                setAlignment(textData.get("alignment") != null ? TextDisplay.TextAlignment.valueOf(textData.get("alignment").toString().toUpperCase()) : TextDisplay.TextAlignment.CENTER);
+            } else if(hologramType.equals(HologramType.ITEM_DISPLAY)) {
+                HashMap<String, Object> itemData = data.get("itemData") != null ? (HashMap<String, Object>) data.get("itemData") : new HashMap<>();
 
-                getData().asTextDisplayData().setTextOpacity(
-                        textData.get("textOpacity") != null ? (byte) Integer.parseInt(textData.get("textOpacity").toString()) : (byte) -1
-                );
+                setItem(itemData.get("item") != null ? new ItemStack(Material.valueOf(itemData.get("item").toString().toUpperCase())) : new ItemStack(Material.DIRT));
+            } else if(hologramType.equals(HologramType.BLOCK_DISPLAY)) {
+                HashMap<String, Object> blockData = data.get("blockData") != null ? (HashMap<String, Object>) data.get("blockData") : new HashMap<>();
 
-                getData().asTextDisplayData().setMask(
-                        textData.get("mask") != null ? (byte) Integer.parseInt(textData.get("mask").toString()) : (byte) 0
-                );
-            } else if(hologramType.equals(HologramType.ITEM_DISPLAY) && data.get("itemData") != null) {
-                HashMap<String, Object> itemData = (HashMap<String, Object>) data.get("itemData");
-
-                getData().asItemDisplayData().setItem(
-                        itemData.get("item") != null ? Material.valueOf(itemData.get("item").toString().toUpperCase()) : Material.DIRT
-                );
-            } else if(hologramType.equals(HologramType.BLOCK_DISPLAY) && data.get("blockData") != null) {
-                HashMap<String, Object> blockData = (HashMap<String, Object>) data.get("blockData");
-
-                getData().asBlockDisplayData().setBlock(
-                        blockData.get("block") != null ? Material.valueOf(blockData.get("block").toString().toUpperCase()) : Material.DIRT
-                );
+                setBlock(blockData.get("block") != null ? Material.valueOf(blockData.get("block").toString().toUpperCase()) : Material.DIRT);
             }
         }
     }
 
-    public HologramData(Hologram hologram) {
-        this.hologramType = hologram.getType();
-        this.data = hologram.getData().clone();
-        this.location = hologram.getLocation().clone();
-        this.hideOnUnload = hologram.isHideOnUnload();
-        this.placeholdersEnabled = hologram.isPlaceholdersEnabled();
-        this.publicVisible = hologram.isPublicVisible();
-        this.customData = hologram.getCustomData();
+    public LinkedHashMap<String, Object> getAsMap() {
+        LinkedHashMap<String, Object> hashMap = new LinkedHashMap<>();
+        LinkedHashMap<String, Object> data = new LinkedHashMap<>();
+        LinkedHashMap<String, Object> location = new LinkedHashMap<>();
+
+        location.put("world", getLocation().getWorld().getName());
+        location.put("x", getLocation().getX());
+        location.put("y", getLocation().getY());
+        location.put("z", getLocation().getZ());
+
+        hashMap.put("type", getHologramType().toString());
+        hashMap.put("location", location);
+        hashMap.put("publicVisible", isPublicVisible());
+        hashMap.put("placeholdersEnabled", isPlaceholdersEnabled());
+        hashMap.put("customData", getCustomData());
+        data.put("billboard", getBillboard().toString());
+        data.put("viewRange", getViewRange());
+        data.put("width", getWidth());
+        data.put("height", getHeight());
+        data.put("rotationYaw", getRotationYaw());
+        data.put("rotationPitch", getRotationPitch());
+
+        LinkedHashMap<String, Object> scale = new LinkedHashMap<>();
+
+        scale.put("x", getScale().x);
+        scale.put("y", getScale().y);
+        scale.put("z", getScale().z);
+        data.put("scale", scale);
+
+        data.put("shadowRadius", getShadowRadius());
+        data.put("shadowStrength", getShadowStrength());
+        data.put("glowColorOverride", getGlowColorOverride().asRGB());
+        hashMap.put("data", data);
+
+        if(getHologramType().equals(HologramType.TEXT_DISPLAY)) {
+            LinkedHashMap<String, Object> textDisplayData = new LinkedHashMap<>();
+
+            textDisplayData.put("text", Utils.asText(getText()));
+            textDisplayData.put("lineWidth", getLineWidth());
+            textDisplayData.put("textOpacity", getTextOpacity());
+            textDisplayData.put("shadowed", isShadowed());
+            textDisplayData.put("seeThrough", isSeeThrough());
+            textDisplayData.put("defaultBackground", isDefaultBackground());
+            textDisplayData.put("backgroundColor", getDefaultBackgroundColor().asRGB());
+            textDisplayData.put("alignment", getAlignment().name());
+            data.put("textData", textDisplayData);
+        } else if(getHologramType().equals(HologramType.ITEM_DISPLAY)) {
+            LinkedHashMap<String, Object> itemDisplayData = new LinkedHashMap<>();
+
+            itemDisplayData.put("item", getItem());
+            data.put("itemData", itemDisplayData);
+        } else if(getHologramType().equals(HologramType.BLOCK_DISPLAY)) {
+            LinkedHashMap<String, Object> blockDisplayData = new LinkedHashMap<>();
+
+            blockDisplayData.put("block", getBlock());
+            data.put("blockData", blockDisplayData);
+        }
+        return hashMap;
     }
 
-    /**
-     * Sets new data for the given hologram.
-     * Incorrect data is ignored (for example, setting data from ItemDisplayData for TextDisplayData).
-     * Many changes applied should be reloaded by using hologram.applyChanges(); method.
-     */
     public void applyData(Hologram hologram) {
-        hologram.setLocation(location.clone());
-        hologram.setHideOnLoad(hideOnUnload);
+        Display display = (Display) hologram.getEntity();
+
+        if(location != null)
+            hologram.setLocation(location.clone());
+
         hologram.setPlaceholdersEnabled(placeholdersEnabled);
         hologram.setPublicVisible(publicVisible);
-        hologram.setCustomData((HashMap<String, Object>) customData.clone());
+        hologram.setCustomData(customData);
 
-        hologram.getData().setInterpolationDelay(data.getInterpolationDelay());
-        hologram.getData().setTransformationInterpolationDuration(data.getTransformationInterpolationDuration());
-        hologram.getData().setPositionOrRotationInterpolationDuration(data.getPositionOrRotationInterpolationDuration());
-        hologram.getData().setTranslation(data.getTranslation());
-        hologram.getData().setScale(data.getScale().x, data.getScale().y, data.getScale().z);
-        hologram.getData().setRotation(data.getXRotation(), data.getYRotation(), data.getZRotation());
-        hologram.getData().setBillboard(data.getBillboard());
-        hologram.getData().setBrightnessOverride(data.getBrightnessOverride());
-        hologram.getData().setViewRange(data.getViewRange());
-        hologram.getData().setShadowRadius(data.getShadowRadius());
-        hologram.getData().setShadowStrength(data.getShadowStrength());
-        hologram.getData().setWidth(data.getWidth());
-        hologram.getData().setHeight(data.getHeight());
-        hologram.getData().setGlowColorOverride(data.getGlowColorOverride());
+        try {
+            display.getTransformation().getScale().set((Vector3f) scale.clone());
+        } catch(CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
 
-        if(hologram.getData() instanceof TextDisplayData && data instanceof TextDisplayData) {
-            hologram.getData().asTextDisplayData().setText(data.asTextDisplayData().getText());
-            hologram.getData().asTextDisplayData().setLineWidth(data.asTextDisplayData().getLineWidth());
-            hologram.getData().asTextDisplayData().setBackgroundColor(data.asTextDisplayData().getBackgroundColor());
-            hologram.getData().asTextDisplayData().setTextOpacity(data.asTextDisplayData().getTextOpacity());
-            hologram.getData().asTextDisplayData().setMask(data.asTextDisplayData().getMask());
-        } else if(hologram.getData() instanceof ItemDisplayData && data instanceof ItemDisplayData) {
-            hologram.getData().asItemDisplayData().setItem(data.asItemDisplayData().getItem());
-        } else if(hologram.getData() instanceof BlockDisplayData && data instanceof BlockDisplayData) {
-            hologram.getData().asBlockDisplayData().setBlock(data.asBlockDisplayData().getBlock());
+        display.setRotation(rotationYaw, rotationPitch);
+        display.setBrightness(brightness);
+        display.setViewRange(viewRange);
+        display.setShadowRadius(shadowRadius);
+        display.setShadowStrength(shadowStrength);
+        display.setDisplayWidth(width);
+        display.setDisplayHeight(height);
+        display.setGlowColorOverride(glowColorOverride);
+        display.setInterpolationDuration(interpolationDuration);
+        display.setInterpolationDelay(interpolationDelay);
+
+        if(!hologram.getType().equals(hologramType)) return;
+
+        if(hologramType.equals(HologramType.TEXT_DISPLAY)) {
+            hologram.getData().asTextDisplayData()
+                    .setText(text)
+                    .setLineWidth(lineWidth)
+                    .setTextOpacity(textOpacity)
+                    .setShadowed(isShadowed)
+                    .setSeeThrough(isSeeThrough)
+                    .setDefaultBackground(defaultBackground)
+                    .setDefaultBackgroundColor(defaultBackgroundColor)
+                    .setAlignment(alignment);
+        } else if(hologramType.equals(HologramType.ITEM_DISPLAY)) {
+            hologram.getData().asItemDisplayData().setItem(item);
+        } else if(hologramType.equals(HologramType.BLOCK_DISPLAY)) {
+            hologram.getData().asBlockDisplayData().setBlock(block);
         }
     }
 

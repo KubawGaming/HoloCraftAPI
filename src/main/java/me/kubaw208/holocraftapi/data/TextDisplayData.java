@@ -1,71 +1,97 @@
 package me.kubaw208.holocraftapi.data;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
-import me.kubaw208.holocraftapi.enums.HologramAlignment;
 import me.kubaw208.holocraftapi.structs.Hologram;
+import me.kubaw208.holocraftapi.utils.Utils;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Color;
+import org.bukkit.entity.TextDisplay;
 
-@Getter @Setter @Accessors(chain=true)
 public class TextDisplayData extends Data {
 
-    /** text without placeholders. */
-    private String text;
-    private int lineWidth;
-    private int backgroundColor;
-    private byte textOpacity;
-    private byte mask;
-
-    public TextDisplayData() {
-        super();
-        this.text = "Default message";
-        this.lineWidth = 200;
-        this.backgroundColor = 1073741824;
-        this.textOpacity = (byte) -1;
-        this.mask = (byte) 0;
-        this.setScale(0.20f, 0.20f, 0.20f);
+    public TextDisplayData(Hologram hologram) {
+        super(hologram);
+        this.hologram = hologram;
     }
 
-    public TextDisplayData(Hologram hologram) {
-        super();
-        this.hologram = hologram;
-        this.text = "Default message";
-        this.lineWidth = 200;
-        this.backgroundColor = 1073741824;
-        this.textOpacity = (byte) -1;
-        this.mask = (byte) 0;
-        this.setScale(0.20f, 0.20f, 0.20f);
+    private TextDisplay getTextDisplay() {
+        return (TextDisplay) hologram.getEntity();
+    }
+
+    public TextDisplayData setText(Component text) {
+        getTextDisplay().text(text);
+        return this;
+    }
+
+    public TextDisplayData setText(String text) {
+        getTextDisplay().text(Utils.hexComponent(text));
+        return this;
+    }
+
+    public Component getText() {
+        return getTextDisplay().text();
+    }
+
+    public TextDisplayData setLineWidth(int lineWidth) {
+        getTextDisplay().setLineWidth(lineWidth);
+        return this;
+    }
+
+    public int getLineWidth() {
+        return getTextDisplay().getLineWidth();
+    }
+
+    public TextDisplayData setTextOpacity(byte textOpacity) {
+        getTextDisplay().setTextOpacity(textOpacity);
+        return this;
+    }
+
+    public byte getTextOpacity() {
+        return getTextDisplay().getTextOpacity();
     }
 
     public TextDisplayData setShadowed(boolean shadowed) {
-        if(shadowed) mask |= (byte) 0x01;
-        else mask &= ~(byte) 0x01;
+        getTextDisplay().setShadowed(shadowed);
         return this;
+    }
+
+    public boolean isShadowed() {
+        return getTextDisplay().isShadowed();
     }
 
     public TextDisplayData setSeeThrough(boolean seeThrough) {
-        if(seeThrough) mask |= (byte) 0x02;
-        else mask &= ~(byte) 0x02;
+        getTextDisplay().setSeeThrough(seeThrough);
         return this;
+    }
+
+    public boolean isSeeThrough() {
+        return getTextDisplay().isSeeThrough();
     }
 
     public TextDisplayData setDefaultBackground(boolean defaultBackground) {
-        if(defaultBackground) mask |= (byte) 0x04;
-        else mask &= ~(byte) 0x04;
+        getTextDisplay().setDefaultBackground(defaultBackground);
         return this;
     }
 
-    public TextDisplayData setAlignment(HologramAlignment alignment) {
-        if(alignment == null) return this;
+    public boolean isDefaultBackground() {
+        return getTextDisplay().isDefaultBackground();
+    }
 
-        mask &= ~(byte) 0x08;
-
-        switch(alignment) {
-            case LEFT -> mask |= (byte) 0x01;
-            case CENTER -> mask |= (byte) 0x00;
-            case RIGHT -> mask |= (byte) 0x02;
-        }
+    public TextDisplayData setDefaultBackgroundColor(Color backgroundColor) {
+        getTextDisplay().setBackgroundColor(backgroundColor);
         return this;
+    }
+
+    public Color getDefaultBackgroundColor() {
+        return getTextDisplay().getBackgroundColor();
+    }
+
+    public TextDisplayData setAlignment(TextDisplay.TextAlignment alignment) {
+        getTextDisplay().setAlignment(alignment);
+        return this;
+    }
+
+    public TextDisplay.TextAlignment getAlignment() {
+        return getTextDisplay().getAlignment();
     }
 
 }
