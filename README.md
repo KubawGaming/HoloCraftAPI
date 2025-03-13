@@ -2,7 +2,7 @@
 <bold>[![](https://jitpack.io/v/KubawGaming/HoloCraftAPI.svg)](https://jitpack.io/#KubawGaming/HoloCraftAPI)</bold> <strong>Its project version used in gradle/maven</strong>
 
 <br>
-An easy-to-use library that allows you to create holograms using packets.
+An easy-to-use library that allows you to create and manage holograms.
 The code was tested on minecraft version 1.20.4. I did not check compatibility with other versions!
 
 ## Plugins required
@@ -50,15 +50,11 @@ More specific hologram data - such as text, rotation, etc. - you can find in the
 hologram.showHologram(player)
     // Data of hologram is repeating data for all types of holograms
     .getData()
-        // We want to change the text of the hologram
-        // This procedure is only possible for the hologram type TEXT_DISPLAY so we need to enter the TextDisplayData
-        .asTextDisplayData()
-            .setText("Hologram created by HoloCraftAPI")
-    .getHologram() // it's a helpful method to get back from Data to the Hologram class
-    .applyChanges();
+    // We want to change the text of the hologram
+    // This procedure is only possible for the hologram type TEXT_DISPLAY so we need to enter the TextDisplayData
+    .asTextDisplayData()
+    .setText("Hologram created by HoloCraftAPI");
 ```
-
-As you can see at the end I used `.applyChanges()`. In order for the changes you make to be approved and shown to players, you must use this method. Use `.applyChanges()` when you make changes to Data or when you change hologram location using `hologram.setLocation(location);`.
 
 ## ItemDisplay example with rotate animation 
 
@@ -72,22 +68,17 @@ Hologram hologram = hologramManager.createHologram(HologramType.ITEM_DISPLAY, pl
 AtomicReference<Double> xRotation = new AtomicReference<>(0.0);
 
 hologram
-    .getData()
-        .asItemDisplayData()
-            .setItem(Material.DIAMOND_BLOCK)
-    .getHologram()
     // Setting this to true allows every player - even people joining the server - to always see the hologram
-    // Method setPublicVisible(boolean) shouldn't be used when .setItem(Material) is not set yet!
     .setPublicVisible(true)
-    .applyChanges();
+    .getData()
+    .asItemDisplayData()
+    .setItem(Material.DIAMOND_BLOCK);
 
 Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
     hologram
-        // Rotation is available for any type of hologram so we don't have to go into ItemDisplayData
-        .getData()
-            .setRotation(xRotation.get(), 0, 0)
-        .getHologram()
-        .applyChanges();
+    // Rotation is available for any type of hologram so we don't have to go into ItemDisplayData
+    .getData()
+    .setRotation(xRotation.get().floatValue(), 0, 0);
 
     xRotation.set(xRotation.get() + 0.3);
 }, 0, 1);
