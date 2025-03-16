@@ -180,4 +180,13 @@ public class Data {
         return getDisplay().getInterpolationDelay();
     }
 
+    public Data setTeleportDuration(int delay) {
+        getDisplay().setTeleportDuration(delay);
+        return this;
+    }
+
+    public int getTeleportDuration() {
+        return getDisplay().getTeleportDuration();
+    }
+
 }
