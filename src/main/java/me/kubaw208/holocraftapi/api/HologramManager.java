@@ -62,7 +62,8 @@ public class HologramManager {
         customEvent.callEvent();
 
         if(customEvent.isCancelled()) {
-            hologram.getEntity().remove();
+            if(!hologram.getEntity().isDead())
+                hologram.getEntity().remove();
             return null;
         }
 
@@ -85,7 +86,9 @@ public class HologramManager {
 
         int entityID = hologram.getEntity().getEntityId();
 
-        hologram.getEntity().remove();
+        if(!hologram.getEntity().isDead())
+            hologram.getEntity().remove();
+
         holograms.remove(entityID);
     }
 
