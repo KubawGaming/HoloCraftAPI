@@ -299,6 +299,7 @@ public class HologramData {
             e.printStackTrace();
         }
 
+        display.setBillboard(billboard);
         display.setRotation(rotationYaw, rotationPitch);
         display.setBrightness(brightness);
         display.setViewRange(viewRange);
